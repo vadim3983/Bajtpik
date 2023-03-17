@@ -1,0 +1,15 @@
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.csproj.AssemblyReference.cache
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.AssemblyInfoInputs.cache
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.AssemblyInfo.cs
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.csproj.CoreCompileInputs.cache
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\bin\Debug\net7.0\Bajtpik.exe
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\bin\Debug\net7.0\Bajtpik.deps.json
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\bin\Debug\net7.0\Bajtpik.runtimeconfig.json
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\bin\Debug\net7.0\Bajtpik.dll
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\bin\Debug\net7.0\Bajtpik.pdb
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.dll
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\refint\Bajtpik.dll
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.pdb
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\Bajtpik.genruntimeconfig.cache
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpik\Bajtpik\obj\Debug\net7.0\ref\Bajtpik.dll
