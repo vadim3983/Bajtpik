@@ -2,5 +2,5 @@
 
 public interface INewspaper2
 {
-    void PrintNewspaper2();
+    void PrintNewspaper2(int id);
 }
