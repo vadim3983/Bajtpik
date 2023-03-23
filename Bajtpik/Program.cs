@@ -68,7 +68,19 @@ public abstract class main
             author9
         };
 
-        Console.WriteLine("Books:");
+        var myBook = new Book2();
+        /*
+         Book - title, authors, year, pageCount
+    1. The Hitchhiker's Guide to the Galaxy, Douglas Adams, 1987, 320
+    2. The Right Stuff, Tom Wolfe, 1993, 512
+    3. Real-Time Shadows, [Eisemann, Schwarz, Assarsson, Wimmer], 2011, 383
+    4. Mesjasz Diuny, Frank Herbert, 1972, 272
+    5. Dobry Omen, [Terry Pratchett, Neil Gaiman], 1990, 416
+       */
+        //create Book2 with myauthors
+
+
+        Console.WriteLine("Books: representation 1");
         book1.PrintBook();
         book2.PrintBook();
         book3.PrintBook();
@@ -77,7 +89,34 @@ public abstract class main
 
         Console.WriteLine("\n");
 
-        //newspapers
+        Console.WriteLine("Books: representation 2");
+
+        myBook.AddBook("The Hitchhiker's Guide to the Galaxy", new List<int> { 1 }, 1987, 320);
+        myBook.AddBook("The Right Stuff", new List<int> { 2 }, 1993, 512);
+        myBook.AddBook("Real-Time Shadows", new List<int> { 3, 4, 5, 6 }, 2011, 383);
+        myBook.AddBook("Mesjasz Diuny", new List<int> { 7 }, 1972, 272);
+        myBook.AddBook("Dobry Omen", new List<int> { 8, 9 }, 1990, 416);
+
+        myBook.PrintBook2(1, myAuthor);
+        myBook.PrintBook2(2, myAuthor);
+        myBook.PrintBook2(3, myAuthor);
+        myBook.PrintBook2(4, myAuthor);
+        myBook.PrintBook2(5, myAuthor);
+
+
+        Console.WriteLine("\n");
+
+        Console.WriteLine("Print books with adapter");
+        var BookAdapter = new BooksAdapter(myBook, myAuthor);
+        BookAdapter.PrintBook();
+        BookAdapter.PrintBook();
+        BookAdapter.PrintBook();
+        BookAdapter.PrintBook();
+        BookAdapter.PrintBook();
+
+        Console.WriteLine("\n");
+
+
         var newspaper1 = new Newspaper
             { Title = "International Journal of Human-Computer Studies", Year = 1980, PageCount = 300 };
         var newspaper2 = new Newspaper { Title = "Nature", Year = 1869, PageCount = 200 };
@@ -108,9 +147,9 @@ public abstract class main
 
         Console.WriteLine("\n");
 
-        Console.WriteLine("Print newspaper using adapter");
-
         var myNewspaperAdapter = new NewspaperAdapter(myNewspaper);
+
+        Console.WriteLine("Print newspaper using adapter");
 
         myNewspaperAdapter.PrintNewspaper();
         myNewspaperAdapter.PrintNewspaper();
@@ -149,12 +188,27 @@ public abstract class main
 
         var myBoardgame = new Boardgame2();
 
-        myBoardgame.AddBoardgame("Scythe", 1, 5, 7, myAuthor.GetAuthor(10));
+        myBoardgame.AddBoardgame("Scythe", 1, 5, 7, new List<int> { 10, 11 });
+        myBoardgame.AddBoardgame("Catan", 3, 4, 6, new List<int> { 12 });
+        myBoardgame.AddBoardgame("Scrabble", 2, 4, 5, new List<int> { 13, 14 });
+        myBoardgame.AddBoardgame("Twilight Imperium", 3, 8, 9, new List<int> { 15 });
 
-        myBoardgame.AddBoardgame("Catan", 3, 4, 6, myAuthor.GetAuthor(12));
-        myBoardgame.AddBoardgame("Scrabble", 2, 4, 5, myAuthor.GetAuthor(13));
-        myBoardgame.AddBoardgame("Twilight Imperium", 3, 8, 9, myAuthor.GetAuthor(15));
+        Console.WriteLine("Boardgames2:");
+        myBoardgame.PrintBoardgame2(1, myAuthor);
+        myBoardgame.PrintBoardgame2(2, myAuthor);
+        myBoardgame.PrintBoardgame2(3, myAuthor);
+        myBoardgame.PrintBoardgame2(4, myAuthor);
 
+        Console.WriteLine("\n");
+
+        Console.WriteLine("Print boardgames using adapter");
+        var boardgameAdapter = new BoardGamesAdapter(myBoardgame, myAuthor);
+        boardgameAdapter.PrintBoardgame();
+        boardgameAdapter.PrintBoardgame();
+        boardgameAdapter.PrintBoardgame();
+        boardgameAdapter.PrintBoardgame();
+
+        Console.WriteLine("\n");
         //print authors
         Console.WriteLine("Authors:");
         author1.PrintAuthor();

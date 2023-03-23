@@ -9,6 +9,6 @@ public class Author : IAuthor
 
     public void PrintAuthor()
     {
-        Console.WriteLine(Name + " , " + Surname + " , " + BirthYear + " , " + Nickname);
+        Console.WriteLine(Name + " , " + Surname + " , " + BirthYear + "  " + Nickname);
     }
 }
