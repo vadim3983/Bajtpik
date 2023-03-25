@@ -2,13 +2,15 @@
 
 public class Author : IAuthor
 {
-    public string Name;
-    public string Surname;
     public int BirthYear;
+    public string Name;
     public string? Nickname;
+    public string Surname;
 
     public void PrintAuthor()
     {
-        Console.WriteLine(Name + " , " + Surname + " , " + BirthYear + "  " + Nickname);
+        Console.Write($"{Name} {Surname}, {BirthYear}");
+        if (!string.IsNullOrEmpty(Nickname)) Console.Write($", {Nickname}");
+        Console.WriteLine();
     }
 }

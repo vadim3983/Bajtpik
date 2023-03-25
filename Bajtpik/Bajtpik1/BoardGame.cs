@@ -2,15 +2,20 @@
 
 public class Boardgame : IBoardgame
 {
-    public string Title;
-    public int MinPlayers;
-    public int MaxPlayers;
-    public int Difficulty;
     public List<Author> Authors;
+    public int Difficulty;
+    public int MaxPlayers;
+    public int MinPlayers;
+    public string Title;
 
     public void PrintBoardgame()
     {
-        Console.WriteLine(Title + " , " + MinPlayers + " , " + MaxPlayers + " , " + Difficulty + " , " +
-                          Authors.Select(x => x.Name + " " + x.Surname).Aggregate((x, y) => x + ", " + y));
+        Console.WriteLine(
+            $"\"{Title}\", {MinPlayers}, {MaxPlayers}, {Difficulty}, {(Authors.Count > 1 ? "[" : "")}{string.Join(", ", Authors.Select(a => $"{a.Name} {a.Surname}"))}{(Authors.Count > 1 ? "]" : "")}");
+    }
+
+    public void PrintBoardgameAuthorBornAfter1970()
+    {
+        if (Authors.Any(author => author.BirthYear > 1970)) PrintBoardgame();
     }
 }
