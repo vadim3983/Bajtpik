@@ -7,7 +7,8 @@ namespace Bajtpik;
 public abstract class main
 {
     private static void Main()
-    {
+    {   
+        GlobalData myHashMaps = new();
         //authors1
         var author1 = new Author { Name = "Douglas", Surname = "Adams", BirthYear = 1952 };
         var author2 = new Author { Name = "Tom", Surname = "Wolfe", BirthYear = 1930 };
@@ -47,41 +48,39 @@ public abstract class main
 
         //Authors3
 
-        var author3_1 = new Author3("Douglas", "Adams", 1952, "");
-        var author3_2 = new Author3("Tom", "Wolfe", 1930, "");
-        var author3_3 = new Author3("Elmar", "Eisemann", 1978, "");
-        var author3_4 = new Author3("Michael", "Schwarz", 1970, "");
-        var author3_5 = new Author3("Ulf", "Assarsson", 1975, "");
-        var author3_6 = new Author3("Michael", "Wimmer", 1980, "");
-        var author3_7 = new Author3("Frank", "Herbert", 1920, "");
-        var author3_8 = new Author3("Terry", "Pratchett", 1948, "");
-        var author3_9 = new Author3("Neil", "Gaiman", 1960, "");
-        var author3_10 = new Author3("Jamey", "Stegmaier", 1975, "");
-        var author3_11 = new Author3("Jakub", "Różalski", 1981, "Mr. Werewolf");
-        var author3_12 = new Author3("Klaus", "Teuber", 1952, "");
-        var author3_13 = new Author3("Alfred", "Butts", 1899, "");
-        var author3_14 = new Author3("James", "Brunot", 1902, "");
-        var author3_15 = new Author3("Christian T.", "Petersen", 1970, "");
-
-        //author 3 to 1 adapter
-
-        var authorAdapter2 = new AuthorAdapter2(author3_1);
-        var authorAdapter3 = new AuthorAdapter2(author3_2);
-        var authorAdapter4 = new AuthorAdapter2(author3_3);
-        var authorAdapter5 = new AuthorAdapter2(author3_4);
-        var authorAdapter6 = new AuthorAdapter2(author3_5);
-        var authorAdapter7 = new AuthorAdapter2(author3_6);
-        var authorAdapter8 = new AuthorAdapter2(author3_7);
-        var authorAdapter9 = new AuthorAdapter2(author3_8);
-        var authorAdapter10 = new AuthorAdapter2(author3_9);
-        var authorAdapter11 = new AuthorAdapter2(author3_10);
-        var authorAdapter12 = new AuthorAdapter2(author3_11);
-        var authorAdapter13 = new AuthorAdapter2(author3_12);
-        var authorAdapter14 = new AuthorAdapter2(author3_13);
-        var authorAdapter15 = new AuthorAdapter2(author3_14);
-        var authorAdapter16 = new AuthorAdapter2(author3_15);
-
-
+        var author3_1 = new Author3(myHashMaps,"Douglas", "Adams", 1952, "");
+        var author3_2 = new Author3(myHashMaps,"Tom", "Wolfe", 1930, "");
+        var author3_3 = new Author3(myHashMaps,"Elmar", "Eisemann", 1978, "");
+        var author3_4 = new Author3(myHashMaps,"Michael", "Schwarz", 1970, "");
+        var author3_5 = new Author3(myHashMaps,"Ulf", "Assarsson", 1975, "");
+        var author3_6 = new Author3(myHashMaps,"Michael", "Wimmer", 1980, "");
+        var author3_7 = new Author3(myHashMaps,"Frank", "Herbert", 1920, "");
+        var author3_8 = new Author3(myHashMaps,"Terry", "Pratchett", 1948, "");
+        var author3_9 = new Author3(myHashMaps,"Neil", "Gaiman", 1960, "");
+        var author3_10 = new Author3(myHashMaps,"Jamey", "Stegmaier", 1975, "");
+        var author3_11 = new Author3(myHashMaps,"Jakub", "Różalski", 1981, "Mr. Werewolf");
+        var author3_12 = new Author3(myHashMaps,"Klaus", "Teuber", 1952, "");
+        var author3_13 = new Author3(myHashMaps,"Alfred", "Butts", 1899, "");
+        var author3_14 = new Author3(myHashMaps,"James", "Brunot", 1902, "");
+        var author3_15 = new Author3(myHashMaps,"Christian T.", "Petersen", 1970, "");
+        
+        var authorkey1 = myHashMaps.GetAuthorKey( "Douglas", "Adams", 1952);
+        var authorkey2 = myHashMaps.GetAuthorKey( "Tom", "Wolfe", 1930);
+        var authorkey3 = myHashMaps.GetAuthorKey( "Elmar", "Eisemann", 1978);
+        var authorkey4 = myHashMaps.GetAuthorKey( "Michael", "Schwarz", 1970);
+        var authorkey5 = myHashMaps.GetAuthorKey( "Ulf", "Assarsson", 1975);
+        var authorkey6 = myHashMaps.GetAuthorKey( "Michael", "Wimmer", 1980);
+        var authorkey7 = myHashMaps.GetAuthorKey( "Frank", "Herbert", 1920);
+        var authorkey8 = myHashMaps.GetAuthorKey( "Terry", "Pratchett", 1948);
+        var authorkey9 = myHashMaps.GetAuthorKey( "Neil", "Gaiman", 1960);
+        var authorkey10 = myHashMaps.GetAuthorKey( "Jamey", "Stegmaier", 1975);
+        var authorkey11 = myHashMaps.GetAuthorKey( "Jakub", "Różalski", 1981);
+        var authorkey12 = myHashMaps.GetAuthorKey( "Klaus", "Teuber", 1952);
+        var authorkey13 = myHashMaps.GetAuthorKey( "Alfred", "Butts", 1899);
+        var authorkey14 = myHashMaps.GetAuthorKey( "James", "Brunot", 1902);
+        var authorkey15 = myHashMaps.GetAuthorKey( "Christian T.", "Petersen", 1970);
+        
+        
         //books 1
         var book1 = new Book { Title = "The Hitchhiker's Guide to the Galaxy", Year = 1987, PageCount = 320 };
         var book2 = new Book { Title = "The Right Stuff", Year = 1993, PageCount = 512 };
@@ -116,20 +115,12 @@ public abstract class main
 
         //books 3
 
-        var book3_1 = new Book3("The Hitchhiker's Guide to the Galaxy", 1987, 320);
-        var book3_2 = new Book3("The Right Stuff", 1993, 512);
-        var book3_3 = new Book3("Real-Time Shadows", 2011, 383);
-        var book3_4 = new Book3("Mesjasz Diuny", 1972, 272);
-        var book3_5 = new Book3("Dobry Omen", 1990, 416);
-
-        //authors 3 to 1 adapter
-        var bookAdapter3_1 = new BookAdapter2(book3_1, new List<Author3> { author3_1 });
-        var bookAdapter3_2 = new BookAdapter2(book3_2, new List<Author3> { author3_2 });
-        var bookAdapter3_3 =
-            new BookAdapter2(book3_3, new List<Author3> { author3_3, author3_4, author3_5, author3_6 });
-        var bookAdapter3_4 = new BookAdapter2(book3_4, new List<Author3> { author3_7 });
-        var bookAdapter3_5 = new BookAdapter2(book3_5, new List<Author3> { author3_8, author3_9 });
-
+        var book3_1 = new Book3(myHashMaps,"The Hitchhiker's Guide to the Galaxy", new List<int>() {authorkey1},1987, 320);
+        var book3_2 = new Book3(myHashMaps,"The Right Stuff",new List<int>() {authorkey2}, 1993, 512);
+        var book3_3 = new Book3(myHashMaps,"Real-Time Shadows",new List<int>(){authorkey3,authorkey4,authorkey5,authorkey6}, 2011, 383);
+        var book3_4 = new Book3(myHashMaps,"Mesjasz Diuny", new List<int>(){authorkey7},1972, 272);
+        var book3_5 = new Book3(myHashMaps,"Dobry Omen", new List<int>(){authorkey8,authorkey9},1990, 416);
+        
         //Newspaper1
         var newspaper1 = new Newspaper
             { Title = "International Journal of Human-Computer Studies", Year = 1980, PageCount = 300 };
@@ -145,18 +136,11 @@ public abstract class main
         myNewspaper.AddNewspaper("Pixel", 2015, 115);
 
         //Newspaper3
-        var myNewspaper3_1 = new Newspaper3("International Journal of Human-Computer Studies", 1980, 300);
-        var myNewspaper3_2 = new Newspaper3("Nature", 1869, 200);
-        var myNewspaper3_3 = new Newspaper3("National Geographic", 2001, 106);
-        var myNewspaper3_4 = new Newspaper3("Pixel", 2015, 115);
-
-        //Newspaper adapter 3 to 1
-
-        var myNewspaperAdapter3_1 = new NewspaperAdapter2(myNewspaper3_1);
-        var myNewspaperAdapter3_2 = new NewspaperAdapter2(myNewspaper3_2);
-        var myNewspaperAdapter3_3 = new NewspaperAdapter2(myNewspaper3_3);
-        var myNewspaperAdapter3_4 = new NewspaperAdapter2(myNewspaper3_4);
-
+        var myNewspaper3_1 = new Newspaper3(myHashMaps,"International Journal of Human-Computer Studies", 1980, 300);
+        var myNewspaper3_2 = new Newspaper3(myHashMaps,"Nature", 1869, 200);
+        var myNewspaper3_3 = new Newspaper3(myHashMaps,"National Geographic", 2001, 106);
+        var myNewspaper3_4 = new Newspaper3(myHashMaps,"Pixel", 2015, 115);
+        
         //Boardgames 1
         var boardGame1 = new Boardgame { Title = "Scythe", MinPlayers = 1, MaxPlayers = 5, Difficulty = 7 };
         var boardGame2 = new Boardgame { Title = "Catan", MinPlayers = 3, MaxPlayers = 4, Difficulty = 6 };
@@ -185,21 +169,11 @@ public abstract class main
 
         //Boardgames 3
 
-        var myBoardgame3_1 = new Boardgame3("Scythe", 1, 5, 7);
-        var myBoardgame3_2 = new Boardgame3("Catan", 3, 4, 6);
-        var myBoardgame3_3 = new Boardgame3("Scrabble", 2, 4, 5);
-        var myBoardgame3_4 = new Boardgame3("Twilight Imperium", 3, 8, 9);
-
-        //boardgames3 using adapter 3 to 1
-
-        var myBoardgameAdapter2_1 = new BoardgameAdapter2(myBoardgame3_1, new List<Author3> { author3_10, author3_11 });
-        var myBoardgameAdapter2_2 = new BoardgameAdapter2(myBoardgame3_2, new List<Author3> { author3_12 });
-        var myBoardgameAdapter2_3 = new BoardgameAdapter2(myBoardgame3_3, new List<Author3> { author3_13, author3_14 });
-        var myBoardgameAdapter2_4 = new BoardgameAdapter2(myBoardgame3_4, new List<Author3> { author3_15 });
-        var myBoardgames3 = new List<BoardgameAdapter2>
-            { myBoardgameAdapter2_1, myBoardgameAdapter2_2, myBoardgameAdapter2_3, myBoardgameAdapter2_4 };
-
-
+        var myBoardgame3_1 = new Boardgame3(myHashMaps,"Scythe", 1, 5, 7, new List<int> { authorkey10, authorkey11 });
+        var myBoardgame3_2 = new Boardgame3(myHashMaps,"Catan", 3, 4, 6, new List<int> { authorkey12 });
+        var myBoardgame3_3 = new Boardgame3(myHashMaps,"Scrabble", 2, 4, 5, new List<int> { authorkey13, authorkey14 });
+        var myBoardgame3_4 = new Boardgame3(myHashMaps,"Twilight Imperium", 3, 8, 9, new List<int> { authorkey15 });
+        
         Console.WriteLine("Books: representation 1");
         book1.PrintBook();
         book2.PrintBook();
@@ -211,7 +185,6 @@ public abstract class main
 
         Console.WriteLine("Print books if author was born after 1970");
         var books = new List<Book> { book1, book2, book3, book4, book5 };
-        //use printBooKAuthorbornAfter1970
         foreach (var book in books) book.PrintBookAuthorBornAfter1970();
 
 
@@ -238,21 +211,15 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Books: representation 3");
-
-        book3_1.PrintBook(new List<Author3> { author3_1 });
-        book3_2.PrintBook(new List<Author3> { author3_2 });
-        book3_3.PrintBook(new List<Author3> { author3_3, author3_4, author3_5, author3_6 });
-        book3_4.PrintBook(new List<Author3> { author3_7 });
-        book3_5.PrintBook(new List<Author3> { author3_8, author3_9 });
-
+        
+        myHashMaps.PrintAllBooks();
+        
         Console.WriteLine("\n");
 
         Console.WriteLine("Print books with adapter 3 to 1");
-        bookAdapter3_1.PrintBook();
-        bookAdapter3_2.PrintBook();
-        bookAdapter3_3.PrintBook();
-        bookAdapter3_4.PrintBook();
-        bookAdapter3_5.PrintBook();
+ 
+        BookAdapter2 bookAdapter2 = new BookAdapter2(myHashMaps);
+        bookAdapter2.PrintBook();
 
         Console.WriteLine("\n");
 
@@ -283,17 +250,16 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Newspapers: representation 3");
-        var myNewspaper3 = new List<Newspaper3> { myNewspaper3_1, myNewspaper3_2, myNewspaper3_3, myNewspaper3_4 };
-        foreach (var newspaper in myNewspaper3) newspaper.PrintNewspaper();
+        
+        myHashMaps.PrintAllNewspapers();
 
         Console.WriteLine("\n");
 
         Console.WriteLine("Print newspaper using adapter 3 to 1");
-
-        var myNewspaperAdapter3 = new List<INewspaper>
-            { myNewspaperAdapter3_1, myNewspaperAdapter3_2, myNewspaperAdapter3_3, myNewspaperAdapter3_4 };
-        foreach (var newspaper in myNewspaperAdapter3) newspaper.PrintNewspaper();
-
+        
+        NewspaperAdapter2 newspaperAdapter3_1 = new NewspaperAdapter2(myHashMaps);
+        newspaperAdapter3_1.PrintNewspaper();
+        
         Console.WriteLine("\n");
 
         Console.WriteLine("Boardgames:");
@@ -317,16 +283,16 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Boardgames: representation 3");
-        myBoardgame3_1.PrintBoardgame(new List<Author3> { author3_10, author3_11 });
-        myBoardgame3_2.PrintBoardgame(new List<Author3> { author3_12 });
-        myBoardgame3_3.PrintBoardgame(new List<Author3> { author3_13, author3_14 });
-        myBoardgame3_4.PrintBoardgame(new List<Author3> { author3_15 });
-
+        
+        myHashMaps.PrintAllBoardgames();
+        
         Console.WriteLine("\n");
 
         Console.WriteLine("Print boardgames using adapter 3 to 1");
-        foreach (var boardgame in myBoardgames3) boardgame.PrintBoardgame();
-
+        
+        BoardgameAdapter2 boardgameAdapter3_1 = new BoardgameAdapter2(myHashMaps);
+        boardgameAdapter3_1.PrintBoardgame();
+      
         Console.WriteLine("\n");
 
         Console.WriteLine("Print boardgames if author is born after 1970");
@@ -362,37 +328,26 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Authors3:");
-
-        var authors3 = new List<Author3>
-        {
-            author3_1, author3_2, author3_3, author3_4, author3_5, author3_6, author3_7, author3_8, author3_9,
-            author3_10, author3_11, author3_12, author3_13, author3_14, author3_15
-        };
-        authors3.ForEach(author => author.PrintAuthor());
-
+        
+        myHashMaps.PrintAllAuthors();
+        
         Console.WriteLine("\n");
         Console.WriteLine("Print Authors3 using adapter 3 to 1");
+        
+        AuthorAdapter2 authorAdapter3_1 = new AuthorAdapter2(myHashMaps);
+        //authorAdapter3_1.PrintAuthor();
 
-        var authorAdapterList = new List<AuthorAdapter2>
-        {
-            authorAdapter2, authorAdapter3, authorAdapter4, authorAdapter5, authorAdapter6, authorAdapter7,
-            authorAdapter8, authorAdapter9, authorAdapter10, authorAdapter11, authorAdapter12, authorAdapter13,
-            authorAdapter14, authorAdapter15, authorAdapter16
-        };
-        authorAdapterList.ForEach(author => author.PrintAuthor());
-
+  
         Console.WriteLine("\n");
 
         Console.WriteLine("'Print books if author was born after 1970' with adapter 3 to 1");
 
-        var myBooks = new List<BookAdapter2>
-            { bookAdapter3_1, bookAdapter3_2, bookAdapter3_3, bookAdapter3_4, bookAdapter3_5 };
-        foreach (var book in myBooks) book.PrintBookAuthorBornAfter1970();
-
+        bookAdapter2.PrintAllBooksByAuthorsBornAfter();
+  
         Console.WriteLine("\n");
 
         Console.WriteLine("Print Boardgames if author was born after 1970 with adapter 3 to 1");
 
-        foreach (var boardgame in myBoardgames3) boardgame.PrintBoardgameAuthorBornAfter1970();
+
     }
 }

@@ -3,5 +3,5 @@
 public interface IBoardgame
 {
     void PrintBoardgame();
-    void PrintBoardgameAuthorBornAfter1970();
+    //void PrintBoardgameAuthorBornAfter1970();
 }

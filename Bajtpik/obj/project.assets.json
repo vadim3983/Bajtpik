@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\Bajtpik\\Bajtpik.csproj",
+      "projectUniqueName": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\Bajtpik.csproj",
       "projectName": "Bajtpik",
-      "projectPath": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\Bajtpik\\Bajtpik.csproj",
+      "projectPath": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\Bajtpik.csproj",
       "packagesPath": "C:\\Users\\vvi05\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\Bajtpik\\obj\\",
+      "outputPath": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpik\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\vvi05\\AppData\\Roaming\\NuGet\\NuGet.Config",
