@@ -3,5 +3,5 @@
 public interface IBook
 {
     void PrintBook();
-    //void PrintBookAuthorBornAfter1970();
+    void PrintBookAuthorBornAfter1970();
 }

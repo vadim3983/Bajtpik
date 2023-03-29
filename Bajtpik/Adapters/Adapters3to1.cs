@@ -38,15 +38,11 @@ public class NewspaperAdapter2 : INewspaper
 public class BookAdapter2 : IBook
 {
     private readonly IGlobalData _book3;
-    private readonly GlobalData _globalData;
-
-    private GlobalData Book { get; set; }
-    public object Author { get; set; }
 
     public BookAdapter2(IGlobalData book3)
     {
         _book3 = book3;
-        _globalData = new GlobalData();
+        new GlobalData();
     }
 
     public void PrintBook()
@@ -54,80 +50,84 @@ public class BookAdapter2 : IBook
         _book3.PrintAllBooks();
     }
 
-    public void PrintAllBooksByAuthorsBornAfter(int yearThreshold = 1970)
-{
-    Console.WriteLine("Printing books with authors born after {0}", yearThreshold);
-
-    Dictionary<int, string> bookDictionary = _book3.GetBookDictionary();
-    Dictionary<int, string> authorDictionary = _book3.GetAuthorDictionary();
-
-    foreach (KeyValuePair<int, string> bookEntry in bookDictionary)
+    public void PrintBookAuthorBornAfter1970()
     {
-        Console.WriteLine("Processing book: {0}", bookEntry.Value);
+        var bookDictionary = _book3.GetBookDictionary();
+        var authorDictionary = _book3.GetAuthorDictionary();
 
-        string[] bookDetails = bookEntry.Value.Split(',');
-        string authorsString = bookDetails[1].Trim();
-
-        bool bookHasAuthorBornAfterThreshold = false;
-
-        var authors = authorsString.StartsWith("[") && authorsString.EndsWith("]")
-            ? authorsString.Substring(1, authorsString.Length - 2).Split(',').Select(a => a.Trim())
-            : new List<string> { authorsString };
-
-        foreach (string author in authors)
+        foreach (var kvp in bookDictionary)
         {
-            string[] authorNameParts = author.Trim().Split(' ');
-            string firstName = authorNameParts[0];
-            string lastName = authorNameParts.Length > 1 ? authorNameParts[1] : "";
+            var bookInfo = kvp.Value;
+            var bookDetails = bookInfo.Split(',');
 
-            var matchingAuthors = authorDictionary
-                .Where(a => a.Value.StartsWith($"{firstName} {lastName}", StringComparison.OrdinalIgnoreCase))
-                .ToList();
-
-            foreach (var matchingAuthor in matchingAuthors)
+            if (bookDetails.Length >= 3)
             {
-                string[] authorDetails = matchingAuthor.Value.Split(',');
-                if (authorDetails.Length < 3) 
+                var authorsString = bookDetails[1].Trim();
+                var isAnyAuthorBornAfter1970 = false;
+
+                if (authorsString.StartsWith("[") && authorsString.EndsWith("]"))
                 {
-                    continue;
+                    authorsString = authorsString.Substring(1, authorsString.Length - 2);
+                    var authorNames = authorsString.Split(',');
+
+                    foreach (var authorName in authorNames)
+                    {
+                        var nameParts = authorName.Trim().Split(' ');
+                        var firstName = nameParts[0];
+                        var lastName = nameParts.Length > 1 ? nameParts[1] : "";
+                        var authorKey = _book3.GetAuthorKey(firstName, lastName);
+
+                        if (authorKey != -1 && IsAuthorBornAfter1970(authorKey))
+                        {
+                            isAnyAuthorBornAfter1970 = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    var nameParts = authorsString.Split(' ');
+                    var firstName = nameParts[0];
+                    var lastName = nameParts.Length > 1 ? nameParts[1] : "";
+                    var authorKey = _book3.GetAuthorKey(firstName, lastName);
+
+                    if (authorKey != -1 && IsAuthorBornAfter1970(authorKey)) isAnyAuthorBornAfter1970 = true;
                 }
 
-                int birthYear = int.Parse(authorDetails[2].Trim());
-
-                if (birthYear > yearThreshold)
-                {
-                    Console.WriteLine("Found author '{0}' born in {1}", author, birthYear);
-                    bookHasAuthorBornAfterThreshold = true;
-                    break;
-                }
+                if (isAnyAuthorBornAfter1970) Console.WriteLine("{0}", kvp.Value);
             }
-
-            if (bookHasAuthorBornAfterThreshold) break;
-        }
-
-        if (bookHasAuthorBornAfterThreshold)
-        {
-            Console.WriteLine(bookEntry.Value);
         }
     }
+
+    private bool IsAuthorBornAfter1970(int authorKey)
+    {
+        var authorDictionary = _book3.GetAuthorDictionary();
+
+        if (authorDictionary.TryGetValue(authorKey, out var authorInfo))
+        {
+            var authorDetails = authorInfo.Split(' ');
+            if (authorDetails.Length >= 3)
+            {
+                var authorBirthYear = int.Parse(authorDetails[2].Trim());
+
+                if (authorBirthYear > 1970)
+                    return true;
+                return false;
+            }
+
+            Console.WriteLine("Author information is incomplete. Birth year information is missing.");
+            return false;
+        }
+
+        Console.WriteLine($"Author with key {authorKey} not found. Please provide a valid authorKey.");
+        return false;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-}
-
 
 public class BoardgameAdapter2 : IBoardgame
 {
     private readonly IGlobalData _boardgame3;
-    private readonly List<Author3> authors;
+
 
     public BoardgameAdapter2(IGlobalData boardgame3)
     {
@@ -138,5 +138,75 @@ public class BoardgameAdapter2 : IBoardgame
     {
         _boardgame3.PrintAllBoardgames();
     }
-    
+
+
+    public void PrintBoardgameAuthorBornAfter1970()
+    {
+        var bookDictionary = _boardgame3.GetBoardGameDictionary();
+        var authorDictionary = _boardgame3.GetAuthorDictionary();
+
+        foreach (var kvp in bookDictionary)
+        {
+            var boardgameInfo = kvp.Value;
+            var boardgameDetails = boardgameInfo.Split(',');
+
+            if (boardgameDetails.Length < 5) continue;
+            var authorsString = boardgameDetails[4].Trim();
+            var isAnyAuthorBornAfter1970 = false;
+
+            if (authorsString.StartsWith("[") && authorsString.EndsWith("]"))
+            {
+                authorsString = authorsString.Substring(1, authorsString.Length - 2);
+                var authorNames = authorsString.Split(',');
+
+                foreach (var authorName in authorNames)
+                {
+                    var nameParts = authorName.Trim().Split(' ');
+                    var firstName = nameParts[0];
+                    var lastName = nameParts.Length > 1 ? nameParts[1] : "";
+                    var authorKey = _boardgame3.GetAuthorKey(firstName, lastName);
+
+                    if (authorKey != -1 && IsAuthorBornAfter1970(authorKey))
+                    {
+                        isAnyAuthorBornAfter1970 = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                var nameParts = authorsString.Split(' ');
+                var firstName = nameParts[0];
+                var lastName = nameParts.Length > 1 ? nameParts[1] : "";
+                var authorKey = _boardgame3.GetAuthorKey(firstName, lastName);
+
+                if (authorKey != -1 && IsAuthorBornAfter1970(authorKey)) isAnyAuthorBornAfter1970 = true;
+            }
+
+            if (isAnyAuthorBornAfter1970) Console.WriteLine("{0}", kvp.Value);
+        }
+    }
+
+
+    private bool IsAuthorBornAfter1970(int authorKey)
+    {
+        var authorDictionary = _boardgame3.GetAuthorDictionary();
+
+        if (authorDictionary.TryGetValue(authorKey, out var authorInfo))
+        {
+            var authorDetails = authorInfo.Split(' ');
+            if (authorDetails.Length >= 3)
+            {
+                var authorBirthYear = int.Parse(authorDetails[2].Trim());
+
+                return authorBirthYear > 1970;
+            }
+
+            Console.WriteLine("Author information is incomplete. Birth year information is missing.");
+            return false;
+        }
+
+        Console.WriteLine($"Author with key {authorKey} not found. Please provide a valid authorKey.");
+        return false;
+    }
 }

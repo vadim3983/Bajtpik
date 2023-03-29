@@ -7,7 +7,7 @@ namespace Bajtpik;
 public abstract class main
 {
     private static void Main()
-    {   
+    {
         GlobalData myHashMaps = new();
         //authors1
         var author1 = new Author { Name = "Douglas", Surname = "Adams", BirthYear = 1952 };
@@ -48,39 +48,39 @@ public abstract class main
 
         //Authors3
 
-        var author3_1 = new Author3(myHashMaps,"Douglas", "Adams", 1952, "");
-        var author3_2 = new Author3(myHashMaps,"Tom", "Wolfe", 1930, "");
-        var author3_3 = new Author3(myHashMaps,"Elmar", "Eisemann", 1978, "");
-        var author3_4 = new Author3(myHashMaps,"Michael", "Schwarz", 1970, "");
-        var author3_5 = new Author3(myHashMaps,"Ulf", "Assarsson", 1975, "");
-        var author3_6 = new Author3(myHashMaps,"Michael", "Wimmer", 1980, "");
-        var author3_7 = new Author3(myHashMaps,"Frank", "Herbert", 1920, "");
-        var author3_8 = new Author3(myHashMaps,"Terry", "Pratchett", 1948, "");
-        var author3_9 = new Author3(myHashMaps,"Neil", "Gaiman", 1960, "");
-        var author3_10 = new Author3(myHashMaps,"Jamey", "Stegmaier", 1975, "");
-        var author3_11 = new Author3(myHashMaps,"Jakub", "Różalski", 1981, "Mr. Werewolf");
-        var author3_12 = new Author3(myHashMaps,"Klaus", "Teuber", 1952, "");
-        var author3_13 = new Author3(myHashMaps,"Alfred", "Butts", 1899, "");
-        var author3_14 = new Author3(myHashMaps,"James", "Brunot", 1902, "");
-        var author3_15 = new Author3(myHashMaps,"Christian T.", "Petersen", 1970, "");
-        
-        var authorkey1 = myHashMaps.GetAuthorKey( "Douglas", "Adams", 1952);
-        var authorkey2 = myHashMaps.GetAuthorKey( "Tom", "Wolfe", 1930);
-        var authorkey3 = myHashMaps.GetAuthorKey( "Elmar", "Eisemann", 1978);
-        var authorkey4 = myHashMaps.GetAuthorKey( "Michael", "Schwarz", 1970);
-        var authorkey5 = myHashMaps.GetAuthorKey( "Ulf", "Assarsson", 1975);
-        var authorkey6 = myHashMaps.GetAuthorKey( "Michael", "Wimmer", 1980);
-        var authorkey7 = myHashMaps.GetAuthorKey( "Frank", "Herbert", 1920);
-        var authorkey8 = myHashMaps.GetAuthorKey( "Terry", "Pratchett", 1948);
-        var authorkey9 = myHashMaps.GetAuthorKey( "Neil", "Gaiman", 1960);
-        var authorkey10 = myHashMaps.GetAuthorKey( "Jamey", "Stegmaier", 1975);
-        var authorkey11 = myHashMaps.GetAuthorKey( "Jakub", "Różalski", 1981);
-        var authorkey12 = myHashMaps.GetAuthorKey( "Klaus", "Teuber", 1952);
-        var authorkey13 = myHashMaps.GetAuthorKey( "Alfred", "Butts", 1899);
-        var authorkey14 = myHashMaps.GetAuthorKey( "James", "Brunot", 1902);
-        var authorkey15 = myHashMaps.GetAuthorKey( "Christian T.", "Petersen", 1970);
-        
-        
+        var author3_1 = new Author3(myHashMaps, "Douglas", "Adams", 1952, "");
+        var author3_2 = new Author3(myHashMaps, "Tom", "Wolfe", 1930, "");
+        var author3_3 = new Author3(myHashMaps, "Elmar", "Eisemann", 1978, "");
+        var author3_4 = new Author3(myHashMaps, "Michael", "Schwarz", 1970, "");
+        var author3_5 = new Author3(myHashMaps, "Ulf", "Assarsson", 1975, "");
+        var author3_6 = new Author3(myHashMaps, "Michael", "Wimmer", 1980, "");
+        var author3_7 = new Author3(myHashMaps, "Frank", "Herbert", 1920, "");
+        var author3_8 = new Author3(myHashMaps, "Terry", "Pratchett", 1948, "");
+        var author3_9 = new Author3(myHashMaps, "Neil", "Gaiman", 1960, "");
+        var author3_10 = new Author3(myHashMaps, "Jamey", "Stegmaier", 1975, "");
+        var author3_11 = new Author3(myHashMaps, "Jakub", "Różalski", 1981, "Mr. Werewolf");
+        var author3_12 = new Author3(myHashMaps, "Klaus", "Teuber", 1952, "");
+        var author3_13 = new Author3(myHashMaps, "Alfred", "Butts", 1899, "");
+        var author3_14 = new Author3(myHashMaps, "James", "Brunot", 1902, "");
+        var author3_15 = new Author3(myHashMaps, "Christian T.", "Petersen", 1970, "");
+
+        var authorkey1 = myHashMaps.GetAuthorKey("Douglas", "Adams", 1952);
+        var authorkey2 = myHashMaps.GetAuthorKey("Tom", "Wolfe", 1930);
+        var authorkey3 = myHashMaps.GetAuthorKey("Elmar", "Eisemann", 1978);
+        var authorkey4 = myHashMaps.GetAuthorKey("Michael", "Schwarz", 1970);
+        var authorkey5 = myHashMaps.GetAuthorKey("Ulf", "Assarsson", 1975);
+        var authorkey6 = myHashMaps.GetAuthorKey("Michael", "Wimmer", 1980);
+        var authorkey7 = myHashMaps.GetAuthorKey("Frank", "Herbert", 1920);
+        var authorkey8 = myHashMaps.GetAuthorKey("Terry", "Pratchett", 1948);
+        var authorkey9 = myHashMaps.GetAuthorKey("Neil", "Gaiman", 1960);
+        var authorkey10 = myHashMaps.GetAuthorKey("Jamey", "Stegmaier", 1975);
+        var authorkey11 = myHashMaps.GetAuthorKey("Jakub", "Różalski", 1981);
+        var authorkey12 = myHashMaps.GetAuthorKey("Klaus", "Teuber", 1952);
+        var authorkey13 = myHashMaps.GetAuthorKey("Alfred", "Butts", 1899);
+        var authorkey14 = myHashMaps.GetAuthorKey("James", "Brunot", 1902);
+        var authorkey15 = myHashMaps.GetAuthorKey("Christian T.", "Petersen", 1970);
+
+
         //books 1
         var book1 = new Book { Title = "The Hitchhiker's Guide to the Galaxy", Year = 1987, PageCount = 320 };
         var book2 = new Book { Title = "The Right Stuff", Year = 1993, PageCount = 512 };
@@ -115,12 +115,14 @@ public abstract class main
 
         //books 3
 
-        var book3_1 = new Book3(myHashMaps,"The Hitchhiker's Guide to the Galaxy", new List<int>() {authorkey1},1987, 320);
-        var book3_2 = new Book3(myHashMaps,"The Right Stuff",new List<int>() {authorkey2}, 1993, 512);
-        var book3_3 = new Book3(myHashMaps,"Real-Time Shadows",new List<int>(){authorkey3,authorkey4,authorkey5,authorkey6}, 2011, 383);
-        var book3_4 = new Book3(myHashMaps,"Mesjasz Diuny", new List<int>(){authorkey7},1972, 272);
-        var book3_5 = new Book3(myHashMaps,"Dobry Omen", new List<int>(){authorkey8,authorkey9},1990, 416);
-        
+        var book3_1 = new Book3(myHashMaps, "The Hitchhiker's Guide to the Galaxy", new List<int> { authorkey1 }, 1987,
+            320);
+        var book3_2 = new Book3(myHashMaps, "The Right Stuff", new List<int> { authorkey2 }, 1993, 512);
+        var book3_3 = new Book3(myHashMaps, "Real-Time Shadows",
+            new List<int> { authorkey3, authorkey4, authorkey5, authorkey6 }, 2011, 383);
+        var book3_4 = new Book3(myHashMaps, "Mesjasz Diuny", new List<int> { authorkey7 }, 1972, 272);
+        var book3_5 = new Book3(myHashMaps, "Dobry Omen", new List<int> { authorkey8, authorkey9 }, 1990, 416);
+
         //Newspaper1
         var newspaper1 = new Newspaper
             { Title = "International Journal of Human-Computer Studies", Year = 1980, PageCount = 300 };
@@ -136,11 +138,11 @@ public abstract class main
         myNewspaper.AddNewspaper("Pixel", 2015, 115);
 
         //Newspaper3
-        var myNewspaper3_1 = new Newspaper3(myHashMaps,"International Journal of Human-Computer Studies", 1980, 300);
-        var myNewspaper3_2 = new Newspaper3(myHashMaps,"Nature", 1869, 200);
-        var myNewspaper3_3 = new Newspaper3(myHashMaps,"National Geographic", 2001, 106);
-        var myNewspaper3_4 = new Newspaper3(myHashMaps,"Pixel", 2015, 115);
-        
+        var myNewspaper3_1 = new Newspaper3(myHashMaps, "International Journal of Human-Computer Studies", 1980, 300);
+        var myNewspaper3_2 = new Newspaper3(myHashMaps, "Nature", 1869, 200);
+        var myNewspaper3_3 = new Newspaper3(myHashMaps, "National Geographic", 2001, 106);
+        var myNewspaper3_4 = new Newspaper3(myHashMaps, "Pixel", 2015, 115);
+
         //Boardgames 1
         var boardGame1 = new Boardgame { Title = "Scythe", MinPlayers = 1, MaxPlayers = 5, Difficulty = 7 };
         var boardGame2 = new Boardgame { Title = "Catan", MinPlayers = 3, MaxPlayers = 4, Difficulty = 6 };
@@ -169,11 +171,12 @@ public abstract class main
 
         //Boardgames 3
 
-        var myBoardgame3_1 = new Boardgame3(myHashMaps,"Scythe", 1, 5, 7, new List<int> { authorkey10, authorkey11 });
-        var myBoardgame3_2 = new Boardgame3(myHashMaps,"Catan", 3, 4, 6, new List<int> { authorkey12 });
-        var myBoardgame3_3 = new Boardgame3(myHashMaps,"Scrabble", 2, 4, 5, new List<int> { authorkey13, authorkey14 });
-        var myBoardgame3_4 = new Boardgame3(myHashMaps,"Twilight Imperium", 3, 8, 9, new List<int> { authorkey15 });
-        
+        var myBoardgame3_1 = new Boardgame3(myHashMaps, "Scythe", 1, 5, 7, new List<int> { authorkey10, authorkey11 });
+        var myBoardgame3_2 = new Boardgame3(myHashMaps, "Catan", 3, 4, 6, new List<int> { authorkey12 });
+        var myBoardgame3_3 =
+            new Boardgame3(myHashMaps, "Scrabble", 2, 4, 5, new List<int> { authorkey13, authorkey14 });
+        var myBoardgame3_4 = new Boardgame3(myHashMaps, "Twilight Imperium", 3, 8, 9, new List<int> { authorkey15 });
+
         Console.WriteLine("Books: representation 1");
         book1.PrintBook();
         book2.PrintBook();
@@ -211,14 +214,14 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Books: representation 3");
-        
+
         myHashMaps.PrintAllBooks();
-        
+
         Console.WriteLine("\n");
 
         Console.WriteLine("Print books with adapter 3 to 1");
- 
-        BookAdapter2 bookAdapter2 = new BookAdapter2(myHashMaps);
+
+        var bookAdapter2 = new BookAdapter2(myHashMaps);
         bookAdapter2.PrintBook();
 
         Console.WriteLine("\n");
@@ -250,16 +253,16 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Newspapers: representation 3");
-        
+
         myHashMaps.PrintAllNewspapers();
 
         Console.WriteLine("\n");
 
         Console.WriteLine("Print newspaper using adapter 3 to 1");
-        
-        NewspaperAdapter2 newspaperAdapter3_1 = new NewspaperAdapter2(myHashMaps);
+
+        var newspaperAdapter3_1 = new NewspaperAdapter2(myHashMaps);
         newspaperAdapter3_1.PrintNewspaper();
-        
+
         Console.WriteLine("\n");
 
         Console.WriteLine("Boardgames:");
@@ -283,16 +286,16 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Boardgames: representation 3");
-        
+
         myHashMaps.PrintAllBoardgames();
-        
+
         Console.WriteLine("\n");
 
         Console.WriteLine("Print boardgames using adapter 3 to 1");
-        
-        BoardgameAdapter2 boardgameAdapter3_1 = new BoardgameAdapter2(myHashMaps);
+
+        var boardgameAdapter3_1 = new BoardgameAdapter2(myHashMaps);
         boardgameAdapter3_1.PrintBoardgame();
-      
+
         Console.WriteLine("\n");
 
         Console.WriteLine("Print boardgames if author is born after 1970");
@@ -328,26 +331,27 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Authors3:");
-        
+
         myHashMaps.PrintAllAuthors();
-        
+
         Console.WriteLine("\n");
         Console.WriteLine("Print Authors3 using adapter 3 to 1");
-        
-        AuthorAdapter2 authorAdapter3_1 = new AuthorAdapter2(myHashMaps);
-        //authorAdapter3_1.PrintAuthor();
 
-  
+        var authorAdapter3_1 = new AuthorAdapter2(myHashMaps);
+        authorAdapter3_1.PrintAuthor();
+
+
         Console.WriteLine("\n");
 
         Console.WriteLine("'Print books if author was born after 1970' with adapter 3 to 1");
 
-        bookAdapter2.PrintAllBooksByAuthorsBornAfter();
-  
+        var bookAdapter3_1 = new BookAdapter2(myHashMaps);
+        bookAdapter3_1.PrintBookAuthorBornAfter1970();
+
         Console.WriteLine("\n");
 
         Console.WriteLine("Print Boardgames if author was born after 1970 with adapter 3 to 1");
 
-
+        boardgameAdapter3_1.PrintBoardgameAuthorBornAfter1970();
     }
 }

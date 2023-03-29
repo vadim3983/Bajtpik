@@ -2,8 +2,8 @@
 
 public class Book3
 {
-    private GlobalData _book;
-    
+    private readonly GlobalData _book;
+
     public Book3(GlobalData book, string title, List<int> authorKey, int year, int pageCount)
     {
         _book = book;

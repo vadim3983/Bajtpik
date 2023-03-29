@@ -11,5 +11,7 @@ public interface IGlobalData
 
     public Dictionary<int, string> GetAuthorDictionary();
 
+    public Dictionary<int, string> GetBoardGameDictionary();
+
     public int GetAuthorKey(string name, string surname, int? birthYear = null);
 }
