@@ -4,10 +4,10 @@ namespace Bajtpik.Adapters;
 
 public class AuthorAdapter : IAuthor
 {
-    private readonly IAuthor2 _author2;
+    private readonly IAuthor2? _author2;
     private int _id = 1;
 
-    public AuthorAdapter(IAuthor2 author2)
+    public AuthorAdapter(IAuthor2? author2)
     {
         _author2 = author2;
     }
@@ -21,11 +21,11 @@ public class AuthorAdapter : IAuthor
 
 public class BoardGamesAdapter : IBoardgame
 {
-    private readonly Author2 _author2;
+    private readonly Author2? _author2;
     private readonly Boardgame2 _boardgame2;
     private int _id = 1;
 
-    public BoardGamesAdapter(Boardgame2 boardgame2, Author2 author2)
+    public BoardGamesAdapter(Boardgame2 boardgame2, Author2? author2)
     {
         _boardgame2 = boardgame2;
         _author2 = author2;
@@ -46,11 +46,11 @@ public class BoardGamesAdapter : IBoardgame
 
 public class BooksAdapter : IBook
 {
-    private readonly Author2 _author2;
+    private readonly Author2? _author2;
     private readonly Book2 _book2;
     private int _id = 1;
 
-    public BooksAdapter(Book2 book2, Author2 author2)
+    public BooksAdapter(Book2 book2, Author2? author2)
     {
         _book2 = book2;
         _author2 = author2;

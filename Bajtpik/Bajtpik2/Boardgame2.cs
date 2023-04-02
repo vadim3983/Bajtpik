@@ -13,7 +13,7 @@ public class Boardgame2 : IBoardgame2
         set => _boardGameDict[key] = value;
     }
 
-    public void PrintBoardgame2(int id, Author2 author2)
+    public void PrintBoardgame2(int id, Author2? author2)
     {
         var authorNames = new List<string>();
         for (var i = 0; i < Convert.ToInt32(_boardGameDict[id + ".authorId.count"]); ++i)

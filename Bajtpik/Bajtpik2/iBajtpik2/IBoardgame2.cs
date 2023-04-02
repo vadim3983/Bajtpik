@@ -2,5 +2,5 @@
 
 public interface IBoardgame2
 {
-    void PrintBoardgame2(int id, Author2 author2);
+    void PrintBoardgame2(int id, Author2? author2);
 }

@@ -9,6 +9,11 @@ public abstract class main
     private static void Main()
     {
         GlobalData myHashMaps = new();
+
+
+        ICollection<object> doublyLinkedList = new DoublyLinkedList<object>();
+
+
         //authors1
         var author1 = new Author { Name = "Douglas", Surname = "Adams", BirthYear = 1952 };
         var author2 = new Author { Name = "Tom", Surname = "Wolfe", BirthYear = 1930 };
@@ -25,9 +30,22 @@ public abstract class main
         var author13 = new Author { Name = "Alfred", Surname = "Butts", BirthYear = 1899 };
         var author14 = new Author { Name = "James", Surname = "Brunot", BirthYear = 1902 };
         var author15 = new Author { Name = "Christian T.", Surname = "Petersen", BirthYear = 1970 };
-
+        doublyLinkedList.Add(author1);
+        doublyLinkedList.Add(author2);
+        doublyLinkedList.Add(author3);
+        doublyLinkedList.Add(author4);
+        doublyLinkedList.Add(author5);
+        doublyLinkedList.Add(author6);
+        doublyLinkedList.Add(author7);
+        doublyLinkedList.Add(author8);
+        doublyLinkedList.Add(author9);
+        doublyLinkedList.Add(author10);
+        doublyLinkedList.Add(author11);
+        doublyLinkedList.Add(author12);
+        doublyLinkedList.Add(author13);
+        doublyLinkedList.Add(author14);
+        doublyLinkedList.Add(author15);
         //authors2
-
         var myAuthor = new Author2();
 
         myAuthor.AddAuthor("Douglas", "Adams", 1952, null);
@@ -45,8 +63,9 @@ public abstract class main
         myAuthor.AddAuthor("Alfred", "Butts", 1899, null);
         myAuthor.AddAuthor("James", "Brunot", 1902, null);
         myAuthor.AddAuthor("Christian T.", "Petersen", 1970, null);
-
         //Authors3
+
+        doublyLinkedList.Add(myAuthor);
 
         var author3_1 = new Author3(myHashMaps, "Douglas", "Adams", 1952, "");
         var author3_2 = new Author3(myHashMaps, "Tom", "Wolfe", 1930, "");
@@ -88,17 +107,17 @@ public abstract class main
         var book4 = new Book { Title = "Mesjasz Diuny", Year = 1972, PageCount = 272 };
         var book5 = new Book { Title = "Dobry Omen", Year = 1990, PageCount = 416 };
 
-        book1.Authors = new List<Author> { author1 };
-        book2.Authors = new List<Author> { author2 };
-        book3.Authors = new List<Author>
+        book1.Authors = new List<Author?> { author1 };
+        book2.Authors = new List<Author?> { author2 };
+        book3.Authors = new List<Author?>
         {
             author3,
             author4,
             author5,
             author6
         };
-        book4.Authors = new List<Author> { author7 };
-        book5.Authors = new List<Author>
+        book4.Authors = new List<Author?> { author7 };
+        book5.Authors = new List<Author?>
         {
             author8,
             author9
@@ -149,10 +168,10 @@ public abstract class main
         var boardGame3 = new Boardgame { Title = "Scrabble", MinPlayers = 2, MaxPlayers = 4, Difficulty = 5 };
         var boardGame4 = new Boardgame { Title = "Twilight Imperium", MinPlayers = 3, MaxPlayers = 8, Difficulty = 9 };
 
-        boardGame1.Authors = new List<Author>();
-        boardGame2.Authors = new List<Author>();
-        boardGame3.Authors = new List<Author>();
-        boardGame4.Authors = new List<Author>();
+        boardGame1.Authors = new List<Author?>();
+        boardGame2.Authors = new List<Author?>();
+        boardGame3.Authors = new List<Author?>();
+        boardGame4.Authors = new List<Author?>();
 
         boardGame1.Authors.Add(author10);
         boardGame1.Authors.Add(author11);
@@ -305,12 +324,10 @@ public abstract class main
 
         Console.WriteLine("Authors:");
 
-        var authors1 = new List<Author>
+        doublyLinkedList.Print(_ => true, obj =>
         {
-            author1, author2, author3, author4, author5, author6, author7, author8, author9, author10, author11,
-            author12, author13, author14, author15
-        };
-        authors1.ForEach(a => a.PrintAuthor());
+            if (obj is Author author) author.PrintAuthor();
+        });
 
         Console.WriteLine("\n");
 

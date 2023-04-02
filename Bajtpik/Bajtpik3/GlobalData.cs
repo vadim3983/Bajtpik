@@ -38,27 +38,34 @@ public class GlobalData : IGlobalData
         foreach (var authorEntry in _author)
         {
             var authorDetails = authorEntry.Value.Split(',');
-            var nameParts = authorDetails[0].Trim().Split(' ');
-            var firstName = nameParts[0];
-            var lastName = nameParts.Length > 1 ? nameParts[1] : "";
 
-            if (firstName.Equals(name, StringComparison.OrdinalIgnoreCase) &&
-                lastName.Equals(surname, StringComparison.OrdinalIgnoreCase))
+            // Using the StringSplitOptions.RemoveEmptyEntries to avoid empty entries
+            var nameParts = authorDetails[0].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (nameParts.Length < 2) continue;
+
+            var firstName = nameParts[0].Trim();
+            var lastName = nameParts[1].Trim();
+
+            if (!firstName.Equals(name, StringComparison.OrdinalIgnoreCase) ||
+                !lastName.Equals(surname, StringComparison.OrdinalIgnoreCase)) continue;
+
+            if (birthYear.HasValue)
             {
-                if (birthYear.HasValue)
-                {
-                    var authorBirthYear = int.Parse(authorDetails[1].Trim());
-                    if (birthYear.Value == authorBirthYear) return authorEntry.Key;
-                }
-                else
+                if (int.TryParse(authorDetails[1].Trim(), out int authorBirthYear) &&
+                    birthYear.Value == authorBirthYear)
                 {
                     return authorEntry.Key;
                 }
+            }
+            else
+            {
+                return authorEntry.Key;
             }
         }
 
         return -1;
     }
+
 
 
     public void PrintAllNewspapers()
@@ -106,22 +113,12 @@ public class GlobalData : IGlobalData
                 var authorName = authorDetails[0].Trim();
                 authorNames.Add(authorName);
             }
-            else
-            {
-                Console.WriteLine($"Author with key {authorKey} not found. Please provide a valid authorKey.");
-            }
 
-        if (authorNames.Count > 0)
-        {
-            var authors = authorNames.Count > 1 ? $"{string.Join(", ", authorNames)}" : authorNames[0];
-            var value = $"{title}, {authors}, {year}, {pageCount}";
-            var key = (title + string.Join("", authorNames) + year + pageCount).GetHashCode();
-            _book.Add(key, value);
-        }
-        else
-        {
-            Console.WriteLine("No valid authors found. Please provide at least one valid authorKey.");
-        }
+        if (authorNames.Count <= 0) return;
+        var authors = authorNames.Count > 1 ? $"{string.Join(", ", authorNames)}" : authorNames[0];
+        var value = $"{title}, {authors}, {year}, {pageCount}";
+        var key = (title + string.Join("", authorNames) + year + pageCount).GetHashCode();
+        _book.Add(key, value);
     }
 
     public void AddBoardgame(string title, int minPlayers, int maxPlayers, int difficulty, List<int> authorKeys)
@@ -137,21 +134,11 @@ public class GlobalData : IGlobalData
 
                 authorNames.Add(authorName);
             }
-            else
-            {
-                Console.WriteLine($"Author with key {authorKey} not found. Please provide a valid authorKey.");
-            }
 
-        if (authorNames.Count > 0)
-        {
-            var authors = authorNames.Count > 1 ? $"{string.Join(", ", authorNames)}" : authorNames[0];
-            var value = $"\"{title}\", {minPlayers}, {maxPlayers}, {difficulty}, {authors}";
-            var key = (title + minPlayers + maxPlayers + difficulty + string.Join("", authorNames)).GetHashCode();
-            _boardgame.Add(key, value);
-        }
-        else
-        {
-            Console.WriteLine("No valid authors found. Please provide at least one valid authorKey.");
-        }
+        if (authorNames.Count <= 0) return;
+        var authors = authorNames.Count > 1 ? $"{string.Join(", ", authorNames)}" : authorNames[0];
+        var value = $"\"{title}\", {minPlayers}, {maxPlayers}, {difficulty}, {authors}";
+        var key = (title + minPlayers + maxPlayers + difficulty + string.Join("", authorNames)).GetHashCode();
+        _boardgame.Add(key, value);
     }
 }

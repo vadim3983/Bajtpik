@@ -2,7 +2,7 @@
 
 public class Boardgame : IBoardgame
 {
-    public List<Author> Authors;
+    public List<Author?> Authors;
     public int Difficulty;
     public int MaxPlayers;
     public int MinPlayers;

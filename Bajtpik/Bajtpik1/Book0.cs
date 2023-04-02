@@ -2,12 +2,7 @@
 
 public class Book : IPublication, IBook
 {
-    public List<Author> Authors { get; set; }
-
-    /*
-     1. Print all books(titles, authors, and publication
-year) in which at least one author was born after 1970.
-     */
+    public List<Author?> Authors { get; set; }
 
 
     public void PrintBook()
