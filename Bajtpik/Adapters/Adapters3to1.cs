@@ -12,7 +12,6 @@ public class AuthorAdapter2 : IAuthor
         _author3 = author3;
     }
 
-
     public void PrintAuthor()
     {
         _author3.PrintAllAuthors();
@@ -27,7 +26,6 @@ public class NewspaperAdapter2 : INewspaper
     {
         _newspaper3 = newspaper3;
     }
-
 
     public void PrintNewspaper()
     {
@@ -60,42 +58,35 @@ public class BookAdapter2 : IBook
             var bookInfo = kvp.Value;
             var bookDetails = bookInfo.Split(',');
 
-            if (bookDetails.Length >= 3)
+            if (bookDetails.Length < 3) continue;
+            var authorsString = bookDetails[1].Trim();
+            var isAnyAuthorBornAfter1970 = false;
+
+            if (authorsString.StartsWith("[") && authorsString.EndsWith("]"))
             {
-                var authorsString = bookDetails[1].Trim();
-                var isAnyAuthorBornAfter1970 = false;
+                authorsString = authorsString.Substring(1, authorsString.Length - 2);
+                var authorNames = authorsString.Split(',');
 
-                if (authorsString.StartsWith("[") && authorsString.EndsWith("]"))
-                {
-                    authorsString = authorsString.Substring(1, authorsString.Length - 2);
-                    var authorNames = authorsString.Split(',');
-
-                    foreach (var authorName in authorNames)
-                    {
-                        var nameParts = authorName.Trim().Split(' ');
-                        var firstName = nameParts[0];
-                        var lastName = nameParts.Length > 1 ? nameParts[1] : "";
-                        var authorKey = _book3.GetAuthorKey(firstName, lastName);
-
-                        if (authorKey != -1 && IsAuthorBornAfter1970(authorKey))
-                        {
-                            isAnyAuthorBornAfter1970 = true;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    var nameParts = authorsString.Split(' ');
-                    var firstName = nameParts[0];
-                    var lastName = nameParts.Length > 1 ? nameParts[1] : "";
-                    var authorKey = _book3.GetAuthorKey(firstName, lastName);
-
-                    if (authorKey != -1 && IsAuthorBornAfter1970(authorKey)) isAnyAuthorBornAfter1970 = true;
-                }
-
-                if (isAnyAuthorBornAfter1970) Console.WriteLine("{0}", kvp.Value);
+                if ((from authorName in authorNames
+                        select authorName.Trim().Split(' ')
+                        into nameParts
+                        let firstName = nameParts[0]
+                        let lastName = nameParts.Length > 1 ? nameParts[1] : ""
+                        select _book3.GetAuthorKey(firstName, lastName))
+                    .Any(authorKey => authorKey != -1 && IsAuthorBornAfter1970(authorKey)))
+                    isAnyAuthorBornAfter1970 = true;
             }
+            else
+            {
+                var nameParts = authorsString.Split(' ');
+                var firstName = nameParts[0];
+                var lastName = nameParts.Length > 1 ? nameParts[1] : "";
+                var authorKey = _book3.GetAuthorKey(firstName, lastName);
+
+                if (authorKey != -1 && IsAuthorBornAfter1970(authorKey)) isAnyAuthorBornAfter1970 = true;
+            }
+
+            if (isAnyAuthorBornAfter1970) Console.WriteLine("{0}", kvp.Value);
         }
     }
 
@@ -110,9 +101,7 @@ public class BookAdapter2 : IBook
             {
                 var authorBirthYear = int.Parse(authorDetails[2].Trim());
 
-                if (authorBirthYear > 1970)
-                    return true;
-                return false;
+                return authorBirthYear > 1970;
             }
 
             Console.WriteLine("Author information is incomplete. Birth year information is missing.");
@@ -159,19 +148,14 @@ public class BoardgameAdapter2 : IBoardgame
                 authorsString = authorsString.Substring(1, authorsString.Length - 2);
                 var authorNames = authorsString.Split(',');
 
-                foreach (var authorName in authorNames)
-                {
-                    var nameParts = authorName.Trim().Split(' ');
-                    var firstName = nameParts[0];
-                    var lastName = nameParts.Length > 1 ? nameParts[1] : "";
-                    var authorKey = _boardgame3.GetAuthorKey(firstName, lastName);
-
-                    if (authorKey != -1 && IsAuthorBornAfter1970(authorKey))
-                    {
-                        isAnyAuthorBornAfter1970 = true;
-                        break;
-                    }
-                }
+                if ((from authorName in authorNames
+                        select authorName.Trim().Split(' ')
+                        into nameParts
+                        let firstName = nameParts[0]
+                        let lastName = nameParts.Length > 1 ? nameParts[1] : ""
+                        select _boardgame3.GetAuthorKey(firstName, lastName))
+                    .Any(authorKey => authorKey != -1 && IsAuthorBornAfter1970(authorKey)))
+                    isAnyAuthorBornAfter1970 = true;
             }
             else
             {

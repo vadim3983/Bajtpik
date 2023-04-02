@@ -81,7 +81,7 @@ public abstract class main
         var author3_12 = new Author3(myHashMaps, "Klaus", "Teuber", 1952, "");
         var author3_13 = new Author3(myHashMaps, "Alfred", "Butts", 1899, "");
         var author3_14 = new Author3(myHashMaps, "James", "Brunot", 1902, "");
-        var author3_15 = new Author3(myHashMaps, "Christian T.", "Petersen", 1970, "");
+        var author3_15 = new Author3(myHashMaps, "Christian", "Petersen", 1970, "");
 
         var authorkey1 = myHashMaps.GetAuthorKey("Douglas", "Adams", 1952);
         var authorkey2 = myHashMaps.GetAuthorKey("Tom", "Wolfe", 1930);
@@ -97,7 +97,7 @@ public abstract class main
         var authorkey12 = myHashMaps.GetAuthorKey("Klaus", "Teuber", 1952);
         var authorkey13 = myHashMaps.GetAuthorKey("Alfred", "Butts", 1899);
         var authorkey14 = myHashMaps.GetAuthorKey("James", "Brunot", 1902);
-        var authorkey15 = myHashMaps.GetAuthorKey("Christian T.", "Petersen", 1970);
+        var authorkey15 = myHashMaps.GetAuthorKey("Christian", "Petersen", 1970);
 
 
         //books 1
