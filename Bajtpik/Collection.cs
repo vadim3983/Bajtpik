@@ -45,7 +45,7 @@ public class DoublyLinkedList<T> : ICollection<T>
         }
     }
 
-    public IEnumerator<T?> ForwardIterator()
+    public IEnumerable<T?> ForwardIterator()
     {
         var current = _head;
         while (current != null)
@@ -55,7 +55,7 @@ public class DoublyLinkedList<T> : ICollection<T>
         }
     }
 
-    public IEnumerator<T?> ReverseIterator()
+    public IEnumerable<T?> ReverseIterator()
     {
         var current = _tail;
         while (current != null)
@@ -87,12 +87,12 @@ public class Vector<T> : ICollection<T>
         _items.Remove(item);
     }
 
-    public IEnumerator<T?> ForwardIterator()
+    public IEnumerable<T?> ForwardIterator()
     {
-        return _items.GetEnumerator();
+        return _items;
     }
 
-    public IEnumerator<T?> ReverseIterator()
+    public IEnumerable<T?> ReverseIterator()
     {
         for (var i = _items.Count - 1; i >= 0; i--) yield return _items[i];
     }
@@ -102,7 +102,8 @@ public static class CollectionAlgorithms
 {
     public static T? Find<T>(this ICollection<T?> collection, Func<T, bool> predicate, bool searchFromEnd = false)
     {
-        var iterator = searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator();
+        using var iterator =
+            (searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator()).GetEnumerator();
         while (iterator.MoveNext())
             if (predicate(iterator.Current ??
                           throw new ArgumentNullException(nameof(iterator.Current), "Current is null")))
@@ -113,7 +114,8 @@ public static class CollectionAlgorithms
     public static void Print<T>(this ICollection<T?> collection, Func<T, bool> predicate, Action<T> action,
         bool searchFromEnd = false)
     {
-        var iterator = searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator();
+        using var iterator =
+            (searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator()).GetEnumerator();
         while (iterator.MoveNext())
             if (predicate(iterator.Current ??
                           throw new ArgumentNullException(nameof(iterator.Current), "Current is null")))

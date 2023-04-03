@@ -11,7 +11,7 @@ public abstract class main
         GlobalData myHashMaps = new();
 
 
-        ICollection<object> doublyLinkedList = new DoublyLinkedList<object>();
+        ICollection<Author> doublyLinkedList = new DoublyLinkedList<Author>();
 
 
         //authors1
@@ -64,8 +64,6 @@ public abstract class main
         myAuthor.AddAuthor("James", "Brunot", 1902, null);
         myAuthor.AddAuthor("Christian T.", "Petersen", 1970, null);
         //Authors3
-
-        doublyLinkedList.Add(myAuthor);
 
         var author3_1 = new Author3(myHashMaps, "Douglas", "Adams", 1952, "");
         var author3_2 = new Author3(myHashMaps, "Tom", "Wolfe", 1930, "");
@@ -326,7 +324,7 @@ public abstract class main
 
         doublyLinkedList.Print(_ => true, obj =>
         {
-            if (obj is Author author) author.PrintAuthor();
+            if (obj is { } author) author.PrintAuthor();
         });
 
         Console.WriteLine("\n");
