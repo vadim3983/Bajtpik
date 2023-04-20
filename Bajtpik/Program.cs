@@ -9,11 +9,17 @@ public abstract class main
     private static void Main()
     {
         GlobalData myHashMaps = new();
-
-
+        
         ICollection<Author> doublyLinkedList = new DoublyLinkedList<Author>();
+        
+        ICollection<Author> heap = new Heap<Author>( (a, b) =>
+        {
+            if (a == null || b == null)
+                throw new ArgumentException("Cannot compare null values in a heap.");
 
-
+            return a.BirthYear.CompareTo(b.BirthYear);
+        } );
+        
         //authors1
         var author1 = new Author { Name = "Douglas", Surname = "Adams", BirthYear = 1952 };
         var author2 = new Author { Name = "Tom", Surname = "Wolfe", BirthYear = 1930 };
@@ -30,6 +36,44 @@ public abstract class main
         var author13 = new Author { Name = "Alfred", Surname = "Butts", BirthYear = 1899 };
         var author14 = new Author { Name = "James", Surname = "Brunot", BirthYear = 1902 };
         var author15 = new Author { Name = "Christian T.", Surname = "Petersen", BirthYear = 1970 };
+        
+        heap.Add(author1);
+        heap.Add(author2);
+        heap.Add(author3);
+        heap.Add(author4);
+        heap.Add(author5);
+        heap.Add(author6);
+        heap.Add(author7);
+        heap.Add(author8);
+        
+        Console.WriteLine("Heap:");
+        
+        CollectionAlgorithms.Print(heap.ForwardIterator().GetEnumerator(),_=>true,x=> x.PrintAuthor() );
+        
+        Console.WriteLine("\n");
+        
+        
+        heap.Delete( author1 );
+        
+        Console.WriteLine("Heap:Deleted first element(Douglas Adams):" );
+        
+        CollectionAlgorithms.Print(heap.ForwardIterator().GetEnumerator(),_=>true,x=> x.PrintAuthor() );
+        
+        Console.WriteLine("\n");
+        
+        Console.WriteLine("Heap:Condition" ); 
+        
+        var a = CollectionAlgorithms.CountIf( heap.ForwardIterator().GetEnumerator(),  x=> x.BirthYear > 1950 );
+        
+        Console.WriteLine(a);
+        
+        Console.WriteLine("\n");
+        
+        CollectionAlgorithms.ForEach( heap.ForwardIterator().GetEnumerator(), x=> x.PrintAuthor() );
+        
+        
+        
+        Console.WriteLine("\n");
         doublyLinkedList.Add(author1);
         doublyLinkedList.Add(author2);
         doublyLinkedList.Add(author3);
@@ -321,13 +365,10 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Authors:");
-
-        doublyLinkedList.Print(_ => true, obj =>
-        {
-            if (obj is { } author) author.PrintAuthor();
-        });
-
-        Console.WriteLine("\n");
+        
+        
+      
+            Console.WriteLine("\n");
 
         //print authors2
 

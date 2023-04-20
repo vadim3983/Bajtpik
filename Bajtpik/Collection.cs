@@ -98,27 +98,116 @@ public class Vector<T> : ICollection<T>
     }
 }
 
+public class Heap<T> : ICollection<T>
+{
+    private readonly List<T?> _items = new();
+    private readonly Comparison<T?> _comparator;
+
+    public Heap(Comparison<T?> comparator)
+    {
+        _comparator = comparator;
+    }
+
+    public void Add(T? item)
+    {
+        _items.Add(item);
+        int i = _items.Count - 1;
+        while (i > 0 && _comparator(_items[i], _items[(i - 1) / 2]) < 0)
+        {
+            Swap(i, (i - 1) / 2);
+            i = (i - 1) / 2;
+        }
+    }
+
+    public void Delete(T? item)
+    {
+        int index = _items.IndexOf(item);
+        if (index == -1) return;
+
+        _items[index] = _items[_items.Count - 1];
+        _items.RemoveAt(_items.Count - 1);
+
+        int i = index;
+        while (true)
+        {
+            int left = 2 * i + 1;
+            int right = 2 * i + 2;
+            int smallest = i;
+
+            if (left < _items.Count && _comparator(_items[left], _items[smallest]) < 0) smallest = left;
+            if (right < _items.Count && _comparator(_items[right], _items[smallest]) < 0) smallest = right;
+
+            if (smallest == i) break;
+
+            Swap(i, smallest);
+            i = smallest;
+        }
+    }
+
+    public IEnumerable<T?> ForwardIterator()
+    {
+        return _items;
+    }
+
+    public IEnumerable<T?> ReverseIterator()
+    {
+        for (var i = _items.Count - 1; i >= 0; i--) yield return _items[i];
+    }
+
+    private void Swap(int i, int j)
+    {
+        (_items[i], _items[j]) = (_items[j], _items[i]);
+    }
+}
+
 public static class CollectionAlgorithms
 {
-    public static T? Find<T>(this ICollection<T?> collection, Func<T, bool> predicate, bool searchFromEnd = false)
+    public static T? Find<T>(IEnumerator<T> iterator, Func<T, bool> predicate)
     {
-        using var iterator =
-            (searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator()).GetEnumerator();
         while (iterator.MoveNext())
-            if (predicate(iterator.Current ??
-                          throw new ArgumentNullException(nameof(iterator.Current), "Current is null")))
+        {
+            if (predicate(iterator.Current))
                 return iterator.Current;
+        }
         return default;
     }
 
-    public static void Print<T>(this ICollection<T?> collection, Func<T, bool> predicate, Action<T> action,
-        bool searchFromEnd = false)
+    public static void Print<T>(IEnumerator<T> iterator, Func<T, bool> predicate, Action<T> action)
     {
-        using var iterator =
-            (searchFromEnd ? collection.ReverseIterator() : collection.ForwardIterator()).GetEnumerator();
         while (iterator.MoveNext())
-            if (predicate(iterator.Current ??
-                          throw new ArgumentNullException(nameof(iterator.Current), "Current is null")))
+        {
+            if (predicate(iterator.Current))
                 action(iterator.Current);
+        }
+    }
+
+    public static void ForEach<T>(IEnumerator<T> iterator, Action<T> action)
+    {
+        while (iterator.MoveNext())
+        {
+            action(iterator.Current);
+        }
+    }
+
+    public static int CountIf<T>(IEnumerator<T> iterator, Func<T, bool> predicate)
+    {
+        int count = 0;
+        while (iterator.MoveNext())
+        {
+            if (predicate(iterator.Current))
+                count++;
+        }
+        return count;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
