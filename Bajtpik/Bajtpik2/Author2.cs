@@ -17,7 +17,7 @@ public class Author2 : IAuthor2
             $"{this[id + ".name[0]"]} {this[id + ".surname[0]"]}, {this[id + ".birthYear[0]"]} {this[id + ".nickname[0]"]}");
     }
 
-    public void AddAuthor(string name, string surname, int birthYear, string nickname)
+    public void AddAuthor(string name, string surname, int birthYear, string? nickname)
     {
         this[_id + ".name[0]"] = name;
         this[_id + ".surname[0]"] = surname;

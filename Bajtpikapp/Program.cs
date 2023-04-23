@@ -1,25 +1,31 @@
-﻿using Bajtpik.Adapters;
+﻿using System.Text.RegularExpressions;
+using Bajtpik;
+using Bajtpik.Adapters;
 using Bajtpik.Bajtpik2;
 using Bajtpik.Bajtpik3;
 
-namespace Bajtpik;
+namespace Bajtpikapp;
 
-public abstract class main
+public abstract partial class main
 {
+    private static readonly Data Data = new();
+
+    private static Dictionary<string, Command>? _commands = new();
+
     private static void Main()
     {
         GlobalData myHashMaps = new();
-        
-        ICollection<Author> doublyLinkedList = new DoublyLinkedList<Author>();
-        
-        ICollection<Author> heap = new Heap<Author>( (a, b) =>
+
+        Bajtpik.ICollection<Author> doublyLinkedList = new DoublyLinkedList<Author>();
+
+        Bajtpik.ICollection<Author> author1Heap = new Heap<Author>((a, b) =>
         {
             if (a == null || b == null)
                 throw new ArgumentException("Cannot compare null values in a heap.");
 
             return a.BirthYear.CompareTo(b.BirthYear);
-        } );
-        
+        });
+
         //authors1
         var author1 = new Author { Name = "Douglas", Surname = "Adams", BirthYear = 1952 };
         var author2 = new Author { Name = "Tom", Surname = "Wolfe", BirthYear = 1930 };
@@ -36,43 +42,49 @@ public abstract class main
         var author13 = new Author { Name = "Alfred", Surname = "Butts", BirthYear = 1899 };
         var author14 = new Author { Name = "James", Surname = "Brunot", BirthYear = 1902 };
         var author15 = new Author { Name = "Christian T.", Surname = "Petersen", BirthYear = 1970 };
-        
-        heap.Add(author1);
-        heap.Add(author2);
-        heap.Add(author3);
-        heap.Add(author4);
-        heap.Add(author5);
-        heap.Add(author6);
-        heap.Add(author7);
-        heap.Add(author8);
-        
+
+        author1Heap.Add(author1);
+        author1Heap.Add(author2);
+        author1Heap.Add(author3);
+        author1Heap.Add(author4);
+        author1Heap.Add(author5);
+        author1Heap.Add(author6);
+        author1Heap.Add(author7);
+        author1Heap.Add(author8);
+        author1Heap.Add(author9);
+        author1Heap.Add(author10);
+        author1Heap.Add(author11);
+        author1Heap.Add(author12);
+        author1Heap.Add(author13);
+        author1Heap.Add(author14);
+        author1Heap.Add(author15);
+
         Console.WriteLine("Heap:");
-        
-        CollectionAlgorithms.Print(heap.ForwardIterator().GetEnumerator(),_=>true,x=> x.PrintAuthor() );
-        
+
+        CollectionAlgorithms.Print(author1Heap.ForwardIterator().GetEnumerator(), _ => true, x => x?.PrintAuthor());
+
         Console.WriteLine("\n");
-        
-        
-        heap.Delete( author1 );
-        
-        Console.WriteLine("Heap:Deleted first element(Douglas Adams):" );
-        
-        CollectionAlgorithms.Print(heap.ForwardIterator().GetEnumerator(),_=>true,x=> x.PrintAuthor() );
-        
+
+
+        author1Heap.Delete(author1);
+
+        Console.WriteLine("Heap:Deleted first element(Douglas Adams):");
+
+        CollectionAlgorithms.Print(author1Heap.ForwardIterator().GetEnumerator(), _ => true, x => x?.PrintAuthor());
+
         Console.WriteLine("\n");
-        
-        Console.WriteLine("Heap:Condition" ); 
-        
-        var a = CollectionAlgorithms.CountIf( heap.ForwardIterator().GetEnumerator(),  x=> x.BirthYear > 1950 );
-        
+
+        Console.WriteLine("Heap:Condition");
+
+        var a = CollectionAlgorithms.CountIf(author1Heap.ForwardIterator().GetEnumerator(), x => x is { BirthYear: > 1950 });
+
         Console.WriteLine(a);
-        
+
         Console.WriteLine("\n");
-        
-        CollectionAlgorithms.ForEach( heap.ForwardIterator().GetEnumerator(), x=> x.PrintAuthor() );
-        
-        
-        
+
+        CollectionAlgorithms.ForEach(author1Heap.ForwardIterator().GetEnumerator(), x => x?.PrintAuthor());
+
+
         Console.WriteLine("\n");
         doublyLinkedList.Add(author1);
         doublyLinkedList.Add(author2);
@@ -148,7 +160,7 @@ public abstract class main
         var book3 = new Book { Title = "Real-Time Shadows", Year = 2011, PageCount = 383 };
         var book4 = new Book { Title = "Mesjasz Diuny", Year = 1972, PageCount = 272 };
         var book5 = new Book { Title = "Dobry Omen", Year = 1990, PageCount = 416 };
-
+        
         book1.Authors = new List<Author?> { author1 };
         book2.Authors = new List<Author?> { author2 };
         book3.Authors = new List<Author?>
@@ -237,177 +249,142 @@ public abstract class main
         var myBoardgame3_3 =
             new Boardgame3(myHashMaps, "Scrabble", 2, 4, 5, new List<int> { authorkey13, authorkey14 });
         var myBoardgame3_4 = new Boardgame3(myHashMaps, "Twilight Imperium", 3, 8, 9, new List<int> { authorkey15 });
-
-        Console.WriteLine("Books: representation 1");
-        book1.PrintBook();
-        book2.PrintBook();
-        book3.PrintBook();
-        book4.PrintBook();
-        book5.PrintBook();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print books if author was born after 1970");
-        var books = new List<Book> { book1, book2, book3, book4, book5 };
-        foreach (var book in books) book.PrintBookAuthorBornAfter1970();
-
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Books: representation 2");
-
-        myBook.PrintBook2(1, myAuthor);
-        myBook.PrintBook2(2, myAuthor);
-        myBook.PrintBook2(3, myAuthor);
-        myBook.PrintBook2(4, myAuthor);
-        myBook.PrintBook2(5, myAuthor);
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print books with adapter 2 to 1");
-        var bookAdapter = new BooksAdapter(myBook, myAuthor);
-        bookAdapter.PrintBook();
-        bookAdapter.PrintBook();
-        bookAdapter.PrintBook();
-        bookAdapter.PrintBook();
-        bookAdapter.PrintBook();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Books: representation 3");
-
-        myHashMaps.PrintAllBooks();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print books with adapter 3 to 1");
-
-        var bookAdapter2 = new BookAdapter2(myHashMaps);
-        bookAdapter2.PrintBook();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Newspapers: representation 1");
-
-        var myNewspaper1 = new List<Newspaper> { newspaper1, newspaper2, newspaper3, newspaper4 };
-        foreach (var newspaper in myNewspaper1) newspaper.PrintNewspaper();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Newspapers: representation 2");
-
-        for (var i = 1; i <= 4; i++) myNewspaper.PrintNewspaper2(i);
-
-        Console.WriteLine("\n");
-
-        //Newspaper adapter
-        var myNewspaperAdapter = new NewspaperAdapter(myNewspaper);
-
-        Console.WriteLine("Print newspaper using adapter 2 to 1");
-
-        for (var i = 1; i <= 4; i++) myNewspaperAdapter.PrintNewspaper();
-
-        //print newspaper3
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Newspapers: representation 3");
-
-        myHashMaps.PrintAllNewspapers();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print newspaper using adapter 3 to 1");
-
-        var newspaperAdapter3_1 = new NewspaperAdapter2(myHashMaps);
-        newspaperAdapter3_1.PrintNewspaper();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Boardgames:");
-
-        var boardgames1 = new List<Boardgame> { boardGame1, boardGame2, boardGame3, boardGame4 };
-        foreach (var boardgame in boardgames1) boardgame.PrintBoardgame();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Boardgames2:");
-
-        for (var i = 1; i <= 4; i++) myBoardgame.PrintBoardgame2(i, myAuthor);
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print boardgames using adapter 2 to 1");
-        var boardgameAdapter = new BoardGamesAdapter(myBoardgame, myAuthor);
-
-        for (var i = 1; i <= 4; i++) boardgameAdapter.PrintBoardgame();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Boardgames: representation 3");
-
-        myHashMaps.PrintAllBoardgames();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print boardgames using adapter 3 to 1");
-
-        var boardgameAdapter3_1 = new BoardgameAdapter2(myHashMaps);
-        boardgameAdapter3_1.PrintBoardgame();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print boardgames if author is born after 1970");
-        foreach (var boardgame in boardgames1) boardgame.PrintBoardgameAuthorBornAfter1970();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Authors:");
         
+        Console.WriteLine("\n");
         
-      
-            Console.WriteLine("\n");
-
-        //print authors2
-
-        Console.WriteLine("Authors2:");
-
-        for (var i = 1; i <= 15; i++) myAuthor.PrintAuthor2(i);
+        _commands = new Dictionary<string, Command>
+        {
+            { "list", new ListCommand(Data) },
+            { "find", new FindCommand(Data) },
+            { "exit", new ExitCommand(Data) }
+        };
 
         Console.WriteLine("\n");
+        Console.WriteLine("Welcome to the library!");
+        
+        Bajtpik.ICollection<Book> book1Vector = new Vector<Book>();
+        book1Vector.Add( book1 );
+        book1Vector.Add( book2 );
+        book1Vector.Add( book3 );
+        book1Vector.Add( book4 );
+        book1Vector.Add( book5 );
 
-        Console.WriteLine("Print Authors using adapter 2 to 1");
+        Bajtpik.ICollection<Newspaper> newspaper1List = new DoublyLinkedList<Newspaper>();
+        newspaper1List.Add( newspaper1 );
+        newspaper1List.Add( newspaper2 );
+        newspaper1List.Add( newspaper3 );
+        newspaper1List.Add( newspaper4 );
+        
+        Bajtpik.ICollection<Boardgame> boardgame1List = new DoublyLinkedList<Boardgame>();
+        
+        boardgame1List.Add( boardGame1 );
+        boardgame1List.Add( boardGame2 );
+        boardgame1List.Add( boardGame3 );
+        boardgame1List.Add( boardGame4 );
+        
+        Bajtpik.ICollection<Author2> author12List = new DoublyLinkedList<Author2>();
+        
+        author12List.Add(myAuthor);
 
-        var myAuthorAdapter = new AuthorAdapter(myAuthor);
+        Bajtpik.ICollection<Book2> book2List = new DoublyLinkedList<Book2>();
+        
+        book2List.Add(myBook);
+        
+        Bajtpik.ICollection<Newspaper2> newspaper2List = new DoublyLinkedList<Newspaper2>();
 
-        for (var i = 1; i <= 15; i++) myAuthorAdapter.PrintAuthor();
+        newspaper2List.Add(myNewspaper);
+        
+        Bajtpik.ICollection<Boardgame2> boardgame2List = new DoublyLinkedList<Boardgame2>();
+        
+        boardgame2List.Add(myBoardgame);
+        
+        Bajtpik.ICollection<GlobalData> hashmaps = new Vector<GlobalData>();
+        
+        hashmaps.Add(myHashMaps);
+        
+        Data.author1 = author1Heap;
+        Data.book1 = book1Vector;
+        Data.newspaper1 = newspaper1List;
+        Data.boardgame1 = boardgame1List;
+        Data.author2 = author12List;
+        Data.book2 = book2List;
+        Data.newspaper2 = newspaper2List;
+        Data.boardgame2 = boardgame2List;
+        Data.authors2 = myAuthor;
+        Data.globalData = hashmaps;
+        
 
-        Console.WriteLine("\n");
+        while (true)
+        {
+            Console.Write("Enter command: ");
+            var input = Console.ReadLine();
+            
+            if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase))
+            {
+                _commands["exit"].Execute(null!);
+            }
+            
+            var regex = MyRegex();
+            var match = regex.Match(input ?? throw new InvalidOperationException());
 
-        Console.WriteLine("Authors3:");
+            if (match.Success)
+            {
+                var command = match.Groups["command"].Value;
+                var className = match.Groups["className"].Value;
 
-        myHashMaps.PrintAllAuthors();
+                if (command == "list")
+                {
+                    var args = new[] { command, className };
 
-        Console.WriteLine("\n");
-        Console.WriteLine("Print Authors3 using adapter 3 to 1");
+                    if (_commands.TryGetValue(command, out var value))
+                    {
+                        try
+                        {
+                            value.Execute(args);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error: " + e.Message);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unknown command.");
+                    }
+                }
+                else
+                {
+                    string property = match.Groups["property"].Value;
+                    string operatorType = match.Groups["operator"].Value;
+                    string searchTerm = match.Groups["searchTerm"].Value;
 
-        var authorAdapter3_1 = new AuthorAdapter2(myHashMaps);
-        authorAdapter3_1.PrintAuthor();
+                    string[] args = new[] { command, className, property, operatorType, searchTerm };
 
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("'Print books if author was born after 1970' with adapter 3 to 1");
-
-        var bookAdapter3_1 = new BookAdapter2(myHashMaps);
-        bookAdapter3_1.PrintBookAuthorBornAfter1970();
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Print Boardgames if author was born after 1970 with adapter 3 to 1");
-
-        boardgameAdapter3_1.PrintBoardgameAuthorBornAfter1970();
+                    if (_commands.TryGetValue(command, out var value))
+                    {
+                        try
+                        {
+                            value.Execute(args);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error: " + e.Message);
+                        }
+                    }
+                    
+                    else
+                    {
+                        Console.WriteLine("Unknown command.");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid command format.");
+            }
+        }
     }
+
+    [GeneratedRegex("^(?<command>\\w+)\\s+(?<className>\\w+)(?:\\s+(?<property>\\w+)\\s+(?<operator>[=<>])\\s+(?<searchTerm>.+))?$")]
+    private static partial Regex MyRegex();
 }
