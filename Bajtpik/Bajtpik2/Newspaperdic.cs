@@ -1,6 +1,4 @@
-﻿using Bajtpik.Bajtpik2;
-
-namespace Bajtpik;
+﻿namespace Bajtpik.Bajtpik2;
 
 public class Newspaper2 : INewspaper2
 {

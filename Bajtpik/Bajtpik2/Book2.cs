@@ -11,7 +11,7 @@ public class Book2 : IBook2
         set => _bookDict[key] = value;
     }
 
-    public void PrintBook2(int id, Author2? author2)
+    public void PrintBook2(int id, Author2 author2)
     {
         var authorNames = new List<string>();
         for (var i = 0; i < Convert.ToInt32(_bookDict[id + ".authorId.count"]); ++i)

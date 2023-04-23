@@ -255,12 +255,7 @@ public abstract class main
         Console.WriteLine("\n");
 
         Console.WriteLine("Books: representation 2");
-
-        myBook.PrintBook2(1, myAuthor);
-        myBook.PrintBook2(2, myAuthor);
-        myBook.PrintBook2(3, myAuthor);
-        myBook.PrintBook2(4, myAuthor);
-        myBook.PrintBook2(5, myAuthor);
+        
 
         Console.WriteLine("\n");
 
