@@ -181,7 +181,7 @@ public class FindCommand : Command
         {
             {
                 "author1",
-                (searchTerm, operatorType, propertyName) => 
+                (searchTerm, operatorType, propertyName) =>
                 {
                     Func<Author, bool> predicate;
 
@@ -195,7 +195,7 @@ public class FindCommand : Command
                             break;
                         case "birthyear":
                         {
-                            if (!int.TryParse(searchTerm, out int value))
+                            if (!int.TryParse(searchTerm, out var value))
                             {
                                 Console.WriteLine("Invalid format for birthYear.");
                                 return;
@@ -236,14 +236,15 @@ public class FindCommand : Command
                         case "author" when operatorType != "=":
                             Console.WriteLine("Invalid operator for author property.");
                             return;
-                        
+
                         case "author":
-                            predicate = book => book.Authors.Any(author => author.Name == searchTerm || author.Surname == searchTerm);
+                            predicate = book =>
+                                book.Authors.Any(author => author.Name == searchTerm || author.Surname == searchTerm);
                             break;
                         case "year":
                         case "pagecount":
                         {
-                            if (!int.TryParse(searchTerm, out int value))
+                            if (!int.TryParse(searchTerm, out var value))
                             {
                                 Console.WriteLine("Invalid format for year or pageCount.");
                                 return;
@@ -254,8 +255,12 @@ public class FindCommand : Command
                                 "=" => propertyName == "year"
                                     ? book => book.Year == value
                                     : book => book.PageCount == value,
-                                "<" => propertyName == "year" ? book => book.Year < value : book => book.PageCount < value,
-                                ">" => propertyName == "year" ? book => book.Year > value : book => book.PageCount > value,
+                                "<" => propertyName == "year"
+                                    ? book => book.Year < value
+                                    : book => book.PageCount < value,
+                                ">" => propertyName == "year"
+                                    ? book => book.Year > value
+                                    : book => book.PageCount > value,
                                 _ => throw new ArgumentException($"Invalid operator: {operatorType}")
                             };
                             break;
@@ -269,6 +274,121 @@ public class FindCommand : Command
                         predicate, x => x.PrintBook());
                 }
             },
+            {
+                "newspaper1",
+                (searchTerm, operatorType, propertyName) =>
+                {
+                    Func<Newspaper, bool> predicate;
+
+                    switch (propertyName)
+                    {
+                        case "name" when operatorType != "=":
+                            Console.WriteLine("Invalid operator for name property.");
+                            return;
+                        case "name":
+                            predicate = newspaper => newspaper.Title == searchTerm;
+                            break;
+                        case "year":
+                        case "pagecount":
+                        {
+                            if (!int.TryParse(searchTerm, out var value))
+                            {
+                                Console.WriteLine("Invalid format for year or pageCount.");
+                                return;
+                            }
+
+                            predicate = operatorType switch
+                            {
+                                "=" => propertyName == "year"
+                                    ? newspaper => newspaper.Year == value
+                                    : newspaper => newspaper.PageCount == value,
+                                "<" => propertyName == "year"
+                                    ? newspaper => newspaper.Year < value
+                                    : newspaper => newspaper.PageCount < value,
+                                ">" => propertyName == "year"
+                                    ? newspaper => newspaper.Year > value
+                                    : newspaper => newspaper.PageCount > value,
+                                _ => throw new ArgumentException($"Invalid operator: {operatorType}")
+                            };
+                            break;
+                        }
+                        default:
+                            Console.WriteLine($"Invalid property name: {propertyName}");
+                            return;
+                    }
+
+                    CollectionAlgorithms.Print(
+                        (IEnumerator<Newspaper>)data.newspaper1.ForwardIterator().GetEnumerator(), predicate,
+                        x => x.PrintNewspaper());
+                }
+            },
+            {
+                "boardgame1",
+
+                (searchTerm, operatorType, propertyName) =>
+                {
+                    Func<Boardgame, bool> predicate;
+
+                    switch (propertyName)
+                    {
+                        case "name" when operatorType != "=":
+                            Console.WriteLine("Invalid operator for name property.");
+                            return;
+                        case "name":
+                            predicate = boardgame => boardgame.Title == searchTerm;
+                            break;
+                        case "minplayers":
+                        case "maxplayers":
+                        case "difficulty":
+                        {
+                            if (!int.TryParse(searchTerm, out var value))
+                            {
+                                Console.WriteLine("Invalid format for minPlayers, maxPlayers or difficulty.");
+                                return;
+                            }
+
+                            predicate = operatorType switch
+                            {
+                                "=" => propertyName == "minplayers"
+                                    ? boardgame => boardgame.MinPlayers == value
+                                    : propertyName == "maxplayers"
+                                        ? boardgame => boardgame.MaxPlayers == value
+                                        : boardgame => boardgame.Difficulty == value,
+
+                                "<" => propertyName == "minplayers"
+                                    ? boardgame => boardgame.MinPlayers < value
+                                    : propertyName == "maxplayers"
+                                        ? boardgame => boardgame.MaxPlayers < value
+                                        : boardgame => boardgame.Difficulty < value,
+
+                                ">" => propertyName == "minplayers"
+                                    ? boardgame => boardgame.MinPlayers > value
+                                    : propertyName == "maxplayers"
+                                        ? boardgame => boardgame.MaxPlayers > value
+                                        : boardgame => boardgame.Difficulty > value,
+
+                                _ => throw new ArgumentException($"Invalid operator: {operatorType}")
+                            };
+                            break;
+                        }
+                        case "author" when operatorType != "=":
+                            Console.WriteLine("Invalid operator for author property.");
+                            return;
+
+                        case "author":
+                            predicate = boardgame => boardgame.Authors.Any(author =>
+                                author.Name == searchTerm || author.Surname == searchTerm);
+                            break;
+                        default:
+                            Console.WriteLine($"Invalid property name: {propertyName}");
+                            return;
+                    }
+
+                    CollectionAlgorithms.Print(
+                        (IEnumerator<Boardgame>)data.boardgame1.ForwardIterator().GetEnumerator(),
+                        predicate, x => x.PrintBoardgame());
+                }
+            }
         };
     }
 
@@ -286,27 +406,20 @@ public class FindCommand : Command
         var searchTerm = args[4];
 
         if (findActions.TryGetValue(className, out var action))
-        {
             action(searchTerm, operatorType, propertyName);
-        }
         else
-        {
             Console.WriteLine($"Unknown class name: {className}");
-        }
     }
-
-
 }
 
 public class ExitCommand : Command
+{
+    public ExitCommand(Data data) : base(data)
     {
-        public ExitCommand(Data data) : base(data)
-        {
-        }
-
-        public override void Execute(string[] args)
-        {
-            Environment.Exit(0);
-        }
     }
 
+    public override void Execute(string[] args)
+    {
+        Environment.Exit(0);
+    }
+}
