@@ -1,6 +1,5 @@
 ﻿using System.Text.RegularExpressions;
 using Bajtpik;
-using Bajtpik.Adapters;
 using Bajtpik.Bajtpik2;
 using Bajtpik.Bajtpik3;
 
@@ -23,7 +22,7 @@ public abstract partial class main
             if (a == null || b == null)
                 throw new ArgumentException("Cannot compare null values in a heap.");
 
-            return a.BirthYear.CompareTo(b.BirthYear);
+            return a.BirthYear?.CompareTo(b.BirthYear??0) ?? 0;
         });
 
         //authors1
@@ -76,7 +75,8 @@ public abstract partial class main
 
         Console.WriteLine("Heap:Condition");
 
-        var a = CollectionAlgorithms.CountIf(author1Heap.ForwardIterator().GetEnumerator(), x => x is { BirthYear: > 1950 });
+        var a = CollectionAlgorithms.CountIf(author1Heap.ForwardIterator().GetEnumerator(),
+            x => x is { BirthYear: > 1950 });
 
         Console.WriteLine(a);
 
@@ -160,7 +160,7 @@ public abstract partial class main
         var book3 = new Book { Title = "Real-Time Shadows", Year = 2011, PageCount = 383 };
         var book4 = new Book { Title = "Mesjasz Diuny", Year = 1972, PageCount = 272 };
         var book5 = new Book { Title = "Dobry Omen", Year = 1990, PageCount = 416 };
-        
+
         book1.Authors = new List<Author?> { author1 };
         book2.Authors = new List<Author?> { author2 };
         book3.Authors = new List<Author?>
@@ -249,59 +249,60 @@ public abstract partial class main
         var myBoardgame3_3 =
             new Boardgame3(myHashMaps, "Scrabble", 2, 4, 5, new List<int> { authorkey13, authorkey14 });
         var myBoardgame3_4 = new Boardgame3(myHashMaps, "Twilight Imperium", 3, 8, 9, new List<int> { authorkey15 });
-        
+
         Console.WriteLine("\n");
-        
+
         _commands = new Dictionary<string, Command>
         {
             { "list", new ListCommand(Data) },
             { "find", new FindCommand(Data) },
+            {"save", new SaveCommand(Data)},
             { "exit", new ExitCommand(Data) }
         };
 
         Console.WriteLine("\n");
         Console.WriteLine("Welcome to the library!");
-        
+
         Bajtpik.ICollection<Book> book1Vector = new Vector<Book>();
-        book1Vector.Add( book1 );
-        book1Vector.Add( book2 );
-        book1Vector.Add( book3 );
-        book1Vector.Add( book4 );
-        book1Vector.Add( book5 );
+        book1Vector.Add(book1);
+        book1Vector.Add(book2);
+        book1Vector.Add(book3);
+        book1Vector.Add(book4);
+        book1Vector.Add(book5);
 
         Bajtpik.ICollection<Newspaper> newspaper1List = new DoublyLinkedList<Newspaper>();
-        newspaper1List.Add( newspaper1 );
-        newspaper1List.Add( newspaper2 );
-        newspaper1List.Add( newspaper3 );
-        newspaper1List.Add( newspaper4 );
-        
+        newspaper1List.Add(newspaper1);
+        newspaper1List.Add(newspaper2);
+        newspaper1List.Add(newspaper3);
+        newspaper1List.Add(newspaper4);
+
         Bajtpik.ICollection<Boardgame> boardgame1List = new DoublyLinkedList<Boardgame>();
-        
-        boardgame1List.Add( boardGame1 );
-        boardgame1List.Add( boardGame2 );
-        boardgame1List.Add( boardGame3 );
-        boardgame1List.Add( boardGame4 );
-        
+
+        boardgame1List.Add(boardGame1);
+        boardgame1List.Add(boardGame2);
+        boardgame1List.Add(boardGame3);
+        boardgame1List.Add(boardGame4);
+
         Bajtpik.ICollection<Author2> author12List = new DoublyLinkedList<Author2>();
-        
+
         author12List.Add(myAuthor);
 
         Bajtpik.ICollection<Book2> book2List = new DoublyLinkedList<Book2>();
-        
+
         book2List.Add(myBook);
-        
+
         Bajtpik.ICollection<Newspaper2> newspaper2List = new DoublyLinkedList<Newspaper2>();
 
         newspaper2List.Add(myNewspaper);
-        
+
         Bajtpik.ICollection<Boardgame2> boardgame2List = new DoublyLinkedList<Boardgame2>();
-        
+
         boardgame2List.Add(myBoardgame);
-        
+
         Bajtpik.ICollection<GlobalData> hashmaps = new Vector<GlobalData>();
-        
+
         hashmaps.Add(myHashMaps);
-        
+
         Data.author1 = author1Heap;
         Data.book1 = book1Vector;
         Data.newspaper1 = newspaper1List;
@@ -312,18 +313,16 @@ public abstract partial class main
         Data.boardgame2 = boardgame2List;
         Data.authors2 = myAuthor;
         Data.globalData = hashmaps;
-        
+        Data.globalData2 = myHashMaps;
+
 
         while (true)
         {
             Console.Write("Enter command: ");
             var input = Console.ReadLine();
-            
-            if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase))
-            {
-                _commands["exit"].Execute(null!);
-            }
-            
+
+            if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase)) _commands["exit"].Execute(null!);
+
             var regex = MyRegex();
             var match = regex.Match(input ?? throw new InvalidOperationException());
 
@@ -337,7 +336,6 @@ public abstract partial class main
                     var args = new[] { command, className };
 
                     if (_commands.TryGetValue(command, out var value))
-                    {
                         try
                         {
                             value.Execute(args);
@@ -346,22 +344,40 @@ public abstract partial class main
                         {
                             Console.WriteLine("Error: " + e.Message);
                         }
-                    }
                     else
-                    {
                         Console.WriteLine("Unknown command.");
-                    }
                 }
+                else if (command == "add")
+                {
+                    var representation = match.Groups["representation"].Value;
+                    AddCommand addCommand = new AddCommand(Data, className, representation);
+                    addCommand.Execute(null!);
+                }
+                
+                else if (command == "save")
+                {
+                    if (_commands.TryGetValue(command, out var value))
+                        try
+                        {
+                            value.Execute(null!);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Error: " + e.Message);
+                        }
+                    else
+                        Console.WriteLine("Unknown command.");
+                }
+                
                 else
                 {
-                    string property = match.Groups["property"].Value;
-                    string operatorType = match.Groups["operator"].Value;
-                    string searchTerm = match.Groups["searchTerm"].Value;
+                    var property = match.Groups["property"].Value;
+                    var operatorType = match.Groups["operator"].Value;
+                    var searchTerm = match.Groups["searchTerm"].Value;
 
-                    string[] args = new[] { command, className, property, operatorType, searchTerm };
+                    string[] args = { command, className, property, operatorType, searchTerm };
 
                     if (_commands.TryGetValue(command, out var value))
-                    {
                         try
                         {
                             value.Execute(args);
@@ -370,12 +386,9 @@ public abstract partial class main
                         {
                             Console.WriteLine("Error: " + e.Message);
                         }
-                    }
-                    
+
                     else
-                    {
                         Console.WriteLine("Unknown command.");
-                    }
                 }
             }
             else
@@ -385,6 +398,8 @@ public abstract partial class main
         }
     }
 
-    [GeneratedRegex("^(?<command>\\w+)\\s+(?<className>\\w+)(?:\\s+(?<property>\\w+)\\s+(?<operator>[=<>])\\s+(?<searchTerm>.+))?$")]
+    [GeneratedRegex(
+        "^(?<command>\\w+)(?:\\s+(?<className>\\w+)(?:\\s+(?<property>\\w+)\\s+(?<operator>[=<>])\\s+(?<searchTerm>.+)|\\s+(?<representation>base|secondary))?)?$")]
     private static partial Regex MyRegex();
+
 }

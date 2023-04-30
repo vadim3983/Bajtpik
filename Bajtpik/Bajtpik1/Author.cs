@@ -2,11 +2,11 @@
 
 public class Author : IAuthor
 {
-    public int BirthYear;
-    public string Name;
-    public string? Nickname;
-    public string Surname;
-
+    public int? BirthYear = null;
+    public string? Name = "";
+    public string? Nickname = "";
+    public string? Surname = "";
+    
     public void PrintAuthor()
     {
         Console.Write($"{Name} {Surname}, {BirthYear}");

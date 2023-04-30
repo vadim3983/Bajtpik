@@ -1,8 +1,8 @@
 ﻿namespace Bajtpik;
 
-public class Book : IPublication, IBook
+public class Book : IBook
 {
-    public List<Author?> Authors { get; set; }
+    public List<Author?> Authors { get; set; } = new(); 
 
 
     public void PrintBook()
@@ -16,7 +16,7 @@ public class Book : IPublication, IBook
         if (Authors.Any(author => author.BirthYear > 1970)) PrintBook();
     }
 
-    public string Title { get; set; }
-    public int Year { get; set; }
-    public int? PageCount { get; set; }
+    public string? Title= "";
+    public int? Year= 0;
+    public int? PageCount = null;
 }

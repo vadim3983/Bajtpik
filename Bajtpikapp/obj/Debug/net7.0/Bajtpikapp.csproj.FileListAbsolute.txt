@@ -16,3 +16,4 @@ C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpikapp\obj\Debug\net
 C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpikapp\obj\Debug\net7.0\Bajtpikapp.pdb
 C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpikapp\obj\Debug\net7.0\Bajtpikapp.genruntimeconfig.cache
 C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpikapp\obj\Debug\net7.0\ref\Bajtpikapp.dll
+C:\Users\vvi05\OneDrive\Рабочий стол\Bajtpik\Bajtpikapp\bin\Debug\net7.0\Newtonsoft.Json.dll

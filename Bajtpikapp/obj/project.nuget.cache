@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "gSDiNOXUATItr8TYW1Eus1w7JsXCZKzCcUQw1wHnFa3ZWHLApLTLJfFV9JI1Sp1r8Qh8Hr2HlV39yviagXamsg==",
+  "dgSpecHash": "PDzcLGElX1X/V0UteZAcJyZjtal+dFmI8IYvui3mh6tHWcj4BjM2LGNQH5DLv+FMfNi0lJeuBaczr8gQKuM0Sw==",
   "success": true,
   "projectFilePath": "C:\\Users\\vvi05\\OneDrive\\Рабочий стол\\Bajtpik\\Bajtpikapp\\Bajtpikapp.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\vvi05\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

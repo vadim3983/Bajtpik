@@ -7,7 +7,7 @@ public class Newspaper : IPublication, INewspaper
         Console.WriteLine(Title + ", " + Year + ", " + PageCount);
     }
 
-    public string Title { get; set; }
-    public int Year { get; set; }
+    public string? Title { get; set; }
+    public int? Year { get; set; }
     public int? PageCount { get; set; }
 }

@@ -5,7 +5,7 @@ public class Author2 : IAuthor2
     public readonly Dictionary<string, string?> _authorDict = new();
     public int _id = 1;
 
-    internal string? this[string key]
+    public string? this[string key]
     {
         get => _authorDict.TryGetValue(key, out var value) ? value : $"Invalid key: {key}";
         set => _authorDict[key] = value;
@@ -24,6 +24,21 @@ public class Author2 : IAuthor2
         this[_id + ".birthYear[0]"] = birthYear.ToString();
         this[_id + ".nickname[0]"] = nickname;
         _id++;
+    }
+
+    public string GetName()
+    {
+        return this[_id + ".name[0]"];
+    }
+
+    public string GetSurname()
+    {
+        return this[_id + ".surname[0]"];
+    }
+
+    public int GetId()
+    {
+        return _id;
     }
 
     public int GetBirthYear()
