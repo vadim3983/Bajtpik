@@ -2,6 +2,7 @@
 using Bajtpik;
 using Bajtpik.Bajtpik2;
 using Bajtpik.Bajtpik3;
+using Bajtpikapp.Commands;
 
 namespace Bajtpikapp;
 
@@ -22,7 +23,7 @@ public abstract partial class main
             if (a == null || b == null)
                 throw new ArgumentException("Cannot compare null values in a heap.");
 
-            return a.BirthYear?.CompareTo(b.BirthYear??0) ?? 0;
+            return a.BirthYear?.CompareTo(b.BirthYear ?? 0) ?? 0;
         });
 
         //authors1
@@ -252,14 +253,6 @@ public abstract partial class main
 
         Console.WriteLine("\n");
 
-        _commands = new Dictionary<string, Command>
-        {
-            { "list", new ListCommand(Data) },
-            { "find", new FindCommand(Data) },
-            {"save", new SaveCommand(Data)},
-            { "exit", new ExitCommand(Data) }
-        };
-
         Console.WriteLine("\n");
         Console.WriteLine("Welcome to the library!");
 
@@ -316,90 +309,211 @@ public abstract partial class main
         Data.globalData2 = myHashMaps;
 
 
+        // _commands = new Dictionary<string, Command>
+        // {
+        //     { "list", new ListCommand(Data) },
+        //     { "find", new FindCommand(Data) },
+        //     { "save", new SaveCommand(Data) },
+        //     { "edit", new EditCommand(Data) },
+        //     { "exit", new ExitCommand(Data) }
+        // };
+
+        //     while (true)
+        //     {
+        //         Console.Write("Enter command: ");
+        //         var input = Console.ReadLine();
+        //
+        //         if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase)) _commands["exit"].Execute(null!);
+        //
+        //         var regex = MyRegex();
+        //         var match = regex.Match(input ?? throw new InvalidOperationException());
+        //
+        //         if (match.Success)
+        //         {
+        //             var command = match.Groups["command"].Value;
+        //             var className = match.Groups["className"].Value;
+        //
+        //             if (command == "list")
+        //             {
+        //                 var args = new[] { command, className };
+        //
+        //                 if (_commands.TryGetValue(command, out var value))
+        //                     try
+        //                     {
+        //                         value.Execute(args);
+        //                     }
+        //                     catch (Exception e)
+        //                     {
+        //                         Console.WriteLine("Error: " + e.Message);
+        //                     }
+        //                 else
+        //                     Console.WriteLine("Unknown command.");
+        //             }
+        //             else if (command == "add")
+        //             {
+        //                 var representation = match.Groups["representation"].Value;
+        //                 var addCommand = new AddCommand(Data, className, representation);
+        //                 addCommand.Execute(null!);
+        //             }
+        //             
+        //             else if (command == "edit")
+        //             {
+        //                 var className2 = match.Groups["className"].Value;
+        //                 var propertyName = match.Groups["property"].Value;
+        //                 var operatorType = match.Groups["operator"].Value;
+        //                 var searchTerm = match.Groups["searchTerm"].Value;
+        //                 string[] args = { command, className2, propertyName, operatorType, searchTerm };
+        //
+        //                 if (_commands.TryGetValue(command, out var value))
+        //                 {
+        //                     try
+        //                     {
+        //                         value.Execute(args);
+        //                     }
+        //                     catch (Exception e)
+        //                     {
+        //                         Console.WriteLine("Error: " + e.Message);
+        //                     }
+        //                 }
+        //                 else
+        //                 {
+        //                     Console.WriteLine("Unknown command.");
+        //                 }
+        //             }
+        //
+        //             else if (command == "save")
+        //             {
+        //                 if (_commands.TryGetValue(command, out var value))
+        //                     try
+        //                     {
+        //                         value.Execute(null!);
+        //                     }
+        //                     catch (Exception e)
+        //                     {
+        //                         Console.WriteLine("Error: " + e.Message);
+        //                     }
+        //                 else
+        //                     Console.WriteLine("Unknown command.");
+        //             }
+        //
+        //             else
+        //             {
+        //                 var property = match.Groups["property"].Value;
+        //                 var operatorType = match.Groups["operator"].Value;
+        //                 var searchTerm = match.Groups["searchTerm"].Value;
+        //
+        //                 string[] args = { command, className, property, operatorType, searchTerm };
+        //
+        //                 if (_commands.TryGetValue(command, out var value))
+        //                     try
+        //                     {
+        //                         value.Execute(args);
+        //                     }
+        //                     catch (Exception e)
+        //                     {
+        //                         Console.WriteLine("Error: " + e.Message);
+        //                     }
+        //
+        //                 else
+        //                     Console.WriteLine("Unknown command.");
+        //             }
+        //         }
+        //         else
+        //         {
+        //             Console.WriteLine("Invalid command format.");
+        //         }
+        //     }
+        // }
+
+
+        var queue = new Queue(Data, null);
+
         while (true)
         {
             Console.Write("Enter command: ");
             var input = Console.ReadLine();
 
-            if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase)) _commands["exit"].Execute(null!);
+            var arg = input.Split(' ');
 
-            var regex = MyRegex();
-            var match = regex.Match(input ?? throw new InvalidOperationException());
-
-            if (match.Success)
+            switch (arg[0])
             {
-                var command = match.Groups["command"].Value;
-                var className = match.Groups["className"].Value;
+                case "queue":
+                    queue.args = arg;
+                    queue.Execute();
+                    break;
+                case "exit":
+                    Environment.Exit(0);
+                    break;
+                case "add":
 
-                if (command == "list")
+                    queue.commands.Add(new AddCommand(Data, arg, arg[1], arg[2]));
+                    break;
+                case "delete":
+                case "list":
+                case "find":
+                case "edit":
                 {
-                    var args = new[] { command, className };
+                    var regex = MyRegex();
+                    var match = regex.Match(input ?? throw new InvalidOperationException());
 
-                    if (_commands.TryGetValue(command, out var value))
-                        try
+
+                    if (match.Success)
+                    {
+                        var command = match.Groups["command"].Value;
+                        var className = match.Groups["className"].Value;
+
+                        if (command == "list")
                         {
-                            value.Execute(args);
+                            var args = new[] { command, className };
+
+                            queue.commands.Add(new ListCommand(Data, args));
                         }
-                        catch (Exception e)
+                        else
                         {
-                            Console.WriteLine("Error: " + e.Message);
+                            var property = match.Groups["property"].Value;
+                            var operatorType = match.Groups["operator"].Value;
+                            var searchTerm = match.Groups["searchTerm"].Value;
+
+                            string[] args = { command, className, property, operatorType, searchTerm };
+
+                            if (args[4].StartsWith('"') && args[4].EndsWith('"'))
+                                args[4] = args[4].Substring(1, args[4].Length - 2);
+
+                            if (command == "find")
+                                queue.commands.Add(new FindCommand(Data, args));
+                            
+                            else if (command == "delete")
+                            {
+                                queue.commands.Add(new DeleteCommand(Data, args));
+                            }
+                            else if (command == "edit")
+                                queue.commands.Add(new EditCommand(Data, args));
                         }
+                    }
                     else
-                        Console.WriteLine("Unknown command.");
-                }
-                else if (command == "add")
-                {
-                    var representation = match.Groups["representation"].Value;
-                    AddCommand addCommand = new AddCommand(Data, className, representation);
-                    addCommand.Execute(null!);
-                }
-                
-                else if (command == "save")
-                {
-                    if (_commands.TryGetValue(command, out var value))
-                        try
-                        {
-                            value.Execute(null!);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Error: " + e.Message);
-                        }
-                    else
-                        Console.WriteLine("Unknown command.");
-                }
-                
-                else
-                {
-                    var property = match.Groups["property"].Value;
-                    var operatorType = match.Groups["operator"].Value;
-                    var searchTerm = match.Groups["searchTerm"].Value;
+                    {
+                        Console.WriteLine("Invalid command format.");
+                    }
 
-                    string[] args = { command, className, property, operatorType, searchTerm };
-
-                    if (_commands.TryGetValue(command, out var value))
-                        try
-                        {
-                            value.Execute(args);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Error: " + e.Message);
-                        }
-
-                    else
-                        Console.WriteLine("Unknown command.");
+                    break;
                 }
-            }
-            else
-            {
-                Console.WriteLine("Invalid command format.");
+                default:
+                    Console.WriteLine("Unknown command");
+                    break;
             }
         }
     }
 
-    [GeneratedRegex(
-        "^(?<command>\\w+)(?:\\s+(?<className>\\w+)(?:\\s+(?<property>\\w+)\\s+(?<operator>[=<>])\\s+(?<searchTerm>.+)|\\s+(?<representation>base|secondary))?)?$")]
-    private static partial Regex MyRegex();
 
+    private static Regex MyRegex()
+    {
+        return MyRegex1();
+    }
+    
+    private static Regex MyRegex1()
+    {
+        return new Regex(
+            "^(?<command>\\w+)(?:\\s+(?<className>\\w+)(?:\\s+(?<property>\\w+)\\s+(?<operator>[=<>])\\s+(?<searchTerm>.+)|\\s+(?<representation>base|secondary))?)?$|^(?<command>edit)\\s+(?<className>\\w+)$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    }
 }

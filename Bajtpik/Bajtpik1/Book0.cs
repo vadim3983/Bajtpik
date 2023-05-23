@@ -2,7 +2,11 @@
 
 public class Book : IBook
 {
-    public List<Author?> Authors { get; set; } = new(); 
+    public int? PageCount = null;
+
+    public string? Title = "";
+    public int? Year = 0;
+    public List<Author?> Authors { get; set; } = new();
 
 
     public void PrintBook()
@@ -15,8 +19,4 @@ public class Book : IBook
     {
         if (Authors.Any(author => author.BirthYear > 1970)) PrintBook();
     }
-
-    public string? Title= "";
-    public int? Year= 0;
-    public int? PageCount = null;
 }

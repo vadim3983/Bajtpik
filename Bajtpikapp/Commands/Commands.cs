@@ -1,19 +1,27 @@
-﻿using Bajtpik;
+﻿using System.Text;
+using System.Xml.Serialization;
+using Bajtpik;
 using Bajtpik.Bajtpik2;
 using Bajtpik.Bajtpik3;
-using Newtonsoft.Json;
+using Bajtpikapp.Commands;
 
 namespace Bajtpikapp;
 
 public class Data
 {
-    public Bajtpik.ICollection<Author> author1 { get; set; }
+    public Bajtpik.ICollection<Author> author1 { get; set; } = new DoublyLinkedList<Author>();
     public Bajtpik.ICollection<Book> book1 { get; set; }
     public Bajtpik.ICollection<Newspaper> newspaper1 { get; set; }
     public Bajtpik.ICollection<Boardgame> boardgame1 { get; set; }
-
     public Author2 authors2 { get; set; }
 
+    public List<Author> authors1 { get; set; } = new();
+
+    public List<Book> books1 { get; set; } = new();
+
+    public List<Newspaper> newspapers1 { get; set; } = new();
+
+    public List<Boardgame> boardgames1 { get; set; } = new();
     public Bajtpik.ICollection<Author2> author2 { get; set; }
     public Bajtpik.ICollection<Book2> book2 { get; set; }
     public Bajtpik.ICollection<Newspaper2> newspaper2 { get; set; }
@@ -22,29 +30,42 @@ public class Data
     public Bajtpik.ICollection<GlobalData> globalData { get; set; }
 
     public GlobalData globalData2 { get; set; }
-    
-    public Dictionary<int, Author> Authors { get; } = new Dictionary<int, Author>();
 
-    
+    public Dictionary<int, Author> Authors { get; } = new();
 }
 
+[XmlInclude(typeof(ListCommand))]
+[XmlInclude(typeof(FindCommand))]
+[XmlInclude(typeof(AddCommand))]
+[XmlInclude(typeof(EditCommand))]
+[XmlInclude(typeof(ExitCommand))]
 public abstract class Command
 {
+    public string[] args;
     protected Data Data;
 
-    protected Command(Data data)
+    protected Command(Data data, string[] arguments)
     {
         Data = data;
+        args = arguments;
     }
 
-    public abstract void Execute(string[] args);
+    protected Command()
+    {
+    }
+
+    public abstract void Execute();
 }
 
 public class ListCommand : Command
 {
     private readonly Dictionary<string, Action> printActions;
 
-    public ListCommand(Data data) : base(data)
+    private ListCommand()
+    {
+    }
+
+    public ListCommand(Data data, string[] arguments) : base(data, arguments)
     {
         printActions = new Dictionary<string, Action>
         {
@@ -162,8 +183,10 @@ public class ListCommand : Command
         };
     }
 
-    public override void Execute(string[] args)
+    public override void Execute()
     {
+        Console.WriteLine(this);
+
         if (args.Length != 2)
         {
             Console.WriteLine("Invalid number of arguments");
@@ -176,13 +199,25 @@ public class ListCommand : Command
         else
             Console.WriteLine($"Unknown class name: {className}");
     }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var str in args) sb.Append(str + " ");
+        sb.Remove(sb.Length - 1, 1);
+        return sb.ToString();
+    }
 }
 
 public class FindCommand : Command
 {
     private readonly Dictionary<string, Action<string, string, string>> findActions;
 
-    public FindCommand(Data data) : base(data)
+    private FindCommand()
+    {
+    }
+
+    public FindCommand(Data data, string[] arguments) : base(data, arguments)
     {
         findActions = new Dictionary<string, Action<string, string, string>>
         {
@@ -638,8 +673,10 @@ public class FindCommand : Command
         };
     }
 
-    public override void Execute(string[] args)
+    public override void Execute()
     {
+        Console.WriteLine(this);
+
         if (args.Length != 5)
         {
             Console.WriteLine("Invalid number of arguments");
@@ -656,6 +693,14 @@ public class FindCommand : Command
         else
             Console.WriteLine($"Unknown class name: {className}");
     }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var str in args) sb.Append(str + " ");
+        sb.Remove(sb.Length - 1, 1);
+        return sb.ToString();
+    }
 }
 
 public class AddCommand : Command
@@ -663,16 +708,28 @@ public class AddCommand : Command
     private readonly string _className;
     private readonly bool _isBaseRepresentation;
 
-    public AddCommand(Data data, string className, string representation) : base(data)
+    private AddCommand()
     {
-        _className = className;
-        _isBaseRepresentation = representation.Equals("base", StringComparison.OrdinalIgnoreCase);
     }
 
-    public override void Execute(string[] args)
+    public AddCommand(Data data, string[] arguments, string className, string represintation) : base(data, arguments)
     {
-        Dictionary<string, string> inputFields = new Dictionary<string, string>();
-        string[] availableFields = GetAvailableFields();
+        _className = className;
+        _isBaseRepresentation = represintation.Equals("base", StringComparison.OrdinalIgnoreCase);
+    }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        foreach (var str in args) sb.Append(str + " ");
+        sb.Remove(sb.Length - 1, 1);
+        return sb.ToString();
+    }
+
+    public override void Execute()
+    {
+        var inputFields = new Dictionary<string, string>();
+        var availableFields = GetAvailableFields();
 
         Console.WriteLine($"[Available fields: {string.Join(", ", availableFields)}]");
 
@@ -681,12 +738,13 @@ public class AddCommand : Command
             Console.WriteLine($"[{_className} type does not support adding objects]");
             return;
         }
+
         while (true)
         {
-            string input = Console.ReadLine();
+            var input = Console.ReadLine();
             if (input.Equals("DONE", StringComparison.OrdinalIgnoreCase))
             {
-                if (TryCreateObject(inputFields, out object newObj))
+                if (TryCreateObject(inputFields, out var newObj))
                 {
                     AddObjectToData(newObj);
                     Console.WriteLine($"[{_className} created]");
@@ -704,22 +762,19 @@ public class AddCommand : Command
                 Console.WriteLine($"[{_className} creation abandoned]");
                 break;
             }
-            string[] inputParts = input.Split('=');
+
+            var inputParts = input.Split('=');
             if (inputParts.Length == 2 && availableFields.Contains(inputParts[0]))
-            {
                 inputFields[inputParts[0]] = inputParts[1];
-            }
             else
-            {
-                Console.WriteLine($"[Enter field name and value in format: field = value]");
-            }
+                Console.WriteLine("[Enter field name and value in format: field = value]");
         }
     }
 
     private string[] GetAvailableFields()
     {
         return _className.ToLowerInvariant() switch
-        {   
+        {
             "author" => new[] { "name", "surname", "birthyear", "nickname" },
             "book" => new[] { "title", "authors", "year", "pageCount" },
             "newspaper" => new[] { "title", "year", "pageCount" },
@@ -745,112 +800,104 @@ public class AddCommand : Command
                 return false;
         }
     }
-    
+
     private bool TryCreateBook(Dictionary<string, string> inputFields, out object newObj)
     {
-        bool titleProvided = inputFields.TryGetValue("title", out string title);
-        int year = 0;
-        bool yearProvided = inputFields.TryGetValue("year", out string yearStr) && int.TryParse(yearStr, out year);
-        int pageCount = 0;
-        bool pageCountProvided = inputFields.TryGetValue("pageCount", out string pageCountStr) && int.TryParse(pageCountStr, out pageCount);
-        bool authorsProvided = inputFields.TryGetValue("authors", out string authorsStr);
-        List<Author?> authors = new List<Author?>() {};
-        
+        var titleProvided = inputFields.TryGetValue("title", out var title);
+        var year = 0;
+        var yearProvided = inputFields.TryGetValue("year", out var yearStr) && int.TryParse(yearStr, out year);
+        var pageCount = 0;
+        var pageCountProvided = inputFields.TryGetValue("pageCount", out var pageCountStr) &&
+                                int.TryParse(pageCountStr, out pageCount);
+        var authorsProvided = inputFields.TryGetValue("authors", out var authorsStr);
+        var authors = new List<Author?>();
+
         if (authorsProvided)
         {
-            string[] authorsNames = authorsStr.Split(',');
-            foreach (string authorName in authorsNames)
+            var authorsNames = authorsStr.Split(',');
+            foreach (var authorName in authorsNames)
             {
-                string[] authorNameParts = authorName.Split(' ');
+                var authorNameParts = authorName.Split(' ');
                 if (authorNameParts.Length == 2)
-                {
                     authors.Add(new Author { Name = authorNameParts[0], Surname = authorNameParts[1] });
-                }
                 else
-                {
                     Console.WriteLine($"[Invalid author name: {authorName}]");
-                }
             }
         }
+
         if (!(titleProvided || yearProvided || pageCountProvided || authorsProvided))
-        {
             Console.WriteLine("[Warning: At least one field should be provided]");
-        }
 
         newObj = _isBaseRepresentation
-            ? new Book {Title = title ?? "", Year = year, PageCount = pageCount, Authors = authors }
-            : new Book3(Data.globalData2, title ?? "", authors , year, pageCount);
+            ? new Book { Title = title ?? "", Year = year, PageCount = pageCount, Authors = authors }
+            : new Book3(Data.globalData2, title ?? "", authors, year, pageCount);
 
         return titleProvided || yearProvided || pageCountProvided || authorsProvided;
     }
-    
+
     private bool TryCreateBoardgame(Dictionary<string, string> inputFields, out object newObj)
     {
-        bool titleProvided = inputFields.TryGetValue("title", out string title);
-        int minPlayers = 0;
-        bool minPlayersProvided = inputFields.TryGetValue("minplayers", out string minPlayersStr) && int.TryParse(minPlayersStr, out minPlayers);
-        int maxPlayers = 0;
-        bool maxPlayersProvided = inputFields.TryGetValue("maxplayers", out string maxPlayersStr) && int.TryParse(maxPlayersStr, out maxPlayers);
-        int difficulty = 0;
-        bool difficultyProvided = inputFields.TryGetValue("difficulty", out string difficultyStr) && int.TryParse(difficultyStr, out difficulty);
-        bool authorsProvided = inputFields.TryGetValue("authors", out string authorsStr);
-        List<Author?> authors = new List<Author?>() {};
-        
+        var titleProvided = inputFields.TryGetValue("title", out var title);
+        var minPlayers = 0;
+        var minPlayersProvided = inputFields.TryGetValue("minplayers", out var minPlayersStr) &&
+                                 int.TryParse(minPlayersStr, out minPlayers);
+        var maxPlayers = 0;
+        var maxPlayersProvided = inputFields.TryGetValue("maxplayers", out var maxPlayersStr) &&
+                                 int.TryParse(maxPlayersStr, out maxPlayers);
+        var difficulty = 0;
+        var difficultyProvided = inputFields.TryGetValue("difficulty", out var difficultyStr) &&
+                                 int.TryParse(difficultyStr, out difficulty);
+        var authorsProvided = inputFields.TryGetValue("authors", out var authorsStr);
+        var authors = new List<Author?>();
+
         if (authorsProvided)
         {
-            string[] authorsNames = authorsStr.Split(',');
-            foreach (string authorName in authorsNames)
+            var authorsNames = authorsStr.Split(',');
+            foreach (var authorName in authorsNames)
             {
-                string[] authorNameParts = authorName.Split(' ');
+                var authorNameParts = authorName.Split(' ');
                 if (authorNameParts.Length == 2)
-                {
                     authors.Add(new Author { Name = authorNameParts[0], Surname = authorNameParts[1] });
-                }
                 else
-                {
                     Console.WriteLine($"[Invalid author name: {authorName}]");
-                }
             }
         }
-        
+
         if (!(titleProvided || minPlayersProvided || maxPlayersProvided || difficultyProvided || authorsProvided))
-        {
             Console.WriteLine("[Warning: At least one field should be provided]");
-        }
-        
-        if (minPlayers > maxPlayers)
-        {
-            Console.WriteLine("[Warning: Min players should be less or equal to max players]");
-        }
-        
+
+        if (minPlayers > maxPlayers) Console.WriteLine("[Warning: Min players should be less or equal to max players]");
+
         newObj = _isBaseRepresentation
-            ? new Boardgame {Title = title ?? "", MinPlayers = minPlayers, MaxPlayers = maxPlayers, Difficulty = difficulty, Authors = authors }
+            ? new Boardgame
+            {
+                Title = title ?? "", MinPlayers = minPlayers, MaxPlayers = maxPlayers, Difficulty = difficulty,
+                Authors = authors
+            }
             : new Boardgame3(Data.globalData2, title ?? "", minPlayers, maxPlayers, difficulty, authors);
-        
+
         return titleProvided || minPlayersProvided || maxPlayersProvided || difficultyProvided || authorsProvided;
     }
-    
+
     private bool TryCreateAuthor(Dictionary<string, string> inputFields, out object newObj)
     {
-        bool nameProvided = inputFields.TryGetValue("name", out string name);
-        bool surnameProvided = inputFields.TryGetValue("surname", out string surname);
-        int birthYear = 0;
-        bool birthYearProvided = inputFields.TryGetValue("birthyear", out string birthYearStr) && int.TryParse(birthYearStr, out birthYear);
-        bool nicknameProvided = inputFields.TryGetValue("nickname", out string nickname);
+        var nameProvided = inputFields.TryGetValue("name", out var name);
+        var surnameProvided = inputFields.TryGetValue("surname", out var surname);
+        var birthYear = 0;
+        var birthYearProvided = inputFields.TryGetValue("birthyear", out var birthYearStr) &&
+                                int.TryParse(birthYearStr, out birthYear);
+        var nicknameProvided = inputFields.TryGetValue("nickname", out var nickname);
 
         if (!birthYearProvided && inputFields.ContainsKey("birthYear"))
-        {
             Console.WriteLine("[Warning: birthYear should be an integer]");
-        }
 
         if (!(nameProvided || surnameProvided || birthYearProvided || nicknameProvided))
-        {
             Console.WriteLine("[Warning: At least one field should be provided]");
-        }
 
         newObj = _isBaseRepresentation
-            ? new Author { Name = name ?? "", Surname = surname ?? "", BirthYear = birthYear, Nickname = nickname ?? "" }
-            :new Author3(Data.globalData2, name ?? "", surname ?? "", birthYear, nickname ?? "");
+            ? new Author
+                { Name = name ?? "", Surname = surname ?? "", BirthYear = birthYear, Nickname = nickname ?? "" }
+            : new Author3(Data.globalData2, name ?? "", surname ?? "", birthYear, nickname ?? "");
 
         return nameProvided || surnameProvided || birthYearProvided || nicknameProvided;
     }
@@ -858,100 +905,87 @@ public class AddCommand : Command
 
     private bool TryCreateNewspaper(Dictionary<string, string> inputFields, out object newObj)
     {
-        bool titleProvided = inputFields.TryGetValue("title", out string title);
-        int year = 0;
-        bool yearProvided = inputFields.TryGetValue("year", out string yearStr) && int.TryParse(yearStr, out year);
-        int pageCount = 0;
-        bool pageCountProvided = inputFields.TryGetValue("pageCount", out string pageCountStr) && int.TryParse(pageCountStr, out pageCount);
-        
+        var titleProvided = inputFields.TryGetValue("title", out var title);
+        var year = 0;
+        var yearProvided = inputFields.TryGetValue("year", out var yearStr) && int.TryParse(yearStr, out year);
+        var pageCount = 0;
+        var pageCountProvided = inputFields.TryGetValue("pageCount", out var pageCountStr) &&
+                                int.TryParse(pageCountStr, out pageCount);
+
         if (!(titleProvided || yearProvided || pageCountProvided))
-        {
             Console.WriteLine("[Warning: At least one field should be provided]");
-        }
-        
-        if (!yearProvided && inputFields.ContainsKey("year"))
-        {
-            Console.WriteLine("[Warning: year should be an integer]");
-        }
-        
+
+        if (!yearProvided && inputFields.ContainsKey("year")) Console.WriteLine("[Warning: year should be an integer]");
+
         if (!pageCountProvided && inputFields.ContainsKey("pageCount"))
-        {
             Console.WriteLine("[Warning: pageCount should be an integer]");
-        }
 
         newObj = _isBaseRepresentation
             ? new Newspaper { Title = title ?? "", Year = year, PageCount = pageCount }
             : new Newspaper3(Data.globalData2, title ?? "", year, pageCount);
-        
+
         return titleProvided || yearProvided || pageCountProvided;
     }
 
     private void AddObjectToData(object newObj)
     {
-
         switch (_className.ToLowerInvariant())
         {
             case "book":
                 if (_isBaseRepresentation)
                 {
                     Data.book1.Add((Book)newObj);
+                    Data.books1.Add((Book)newObj);
                 }
+
                 break;
             case "author":
                 if (_isBaseRepresentation)
                 {
                     Data.author1.Add((Author)newObj);
+                    Data.authors1.Add((Author)newObj);
                 }
+
                 break;
             case "newspaper":
                 if (_isBaseRepresentation)
                 {
                     Data.newspaper1.Add((Newspaper)newObj);
+                    Data.newspapers1.Add((Newspaper)newObj);
                 }
+
                 break;
-            
+
             case "boardgame":
                 if (_isBaseRepresentation)
                 {
                     Data.boardgame1.Add((Boardgame)newObj);
+                    Data.boardgames1.Add((Boardgame)newObj);
                 }
+
                 break;
         }
     }
 }
 
-
-public class SaveCommand : Command
-{
-    private readonly Data _data;
-
-    public SaveCommand(Data data) : base(data)
-    {
-        _data = data;
-    }
-
-    public override void Execute(string[] args)
-    {
-        SaveDataToFile(_data);
-    }
-
-    private void SaveDataToFile(Data data)
-    {
-        string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText("data.json", json);
-    }
-
-}
-
-
 public class ExitCommand : Command
 {
-    public ExitCommand(Data data) : base(data)
+    private ExitCommand()
     {
     }
 
-    public override void Execute(string[] args)
+    public ExitCommand(Data data, string[] arguments) : base(data, arguments)
     {
+    }
+
+    public override void Execute()
+    {
+        Console.WriteLine(this);
         Environment.Exit(0);
     }
-} 
+
+    public override string ToString()
+    {
+        return "exit";
+    }
+}

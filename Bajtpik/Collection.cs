@@ -1,4 +1,6 @@
-﻿namespace Bajtpik;
+﻿using System.Collections;
+
+namespace Bajtpik;
 
 public class DoublyLinkedList<T> : ICollection<T>
 {
@@ -71,6 +73,16 @@ public class DoublyLinkedList<T> : ICollection<T>
         public Node? Next { get; set; }
         public Node? Prev { get; set; }
     }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return ForwardIterator().GetEnumerator()!;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
 }
 
 public class Vector<T> : ICollection<T>
@@ -95,6 +107,16 @@ public class Vector<T> : ICollection<T>
     public IEnumerable<T?> ReverseIterator()
     {
         for (var i = _items.Count - 1; i >= 0; i--) yield return _items[i];
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return ForwardIterator().GetEnumerator()!;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
 
@@ -157,6 +179,16 @@ public class Heap<T> : ICollection<T>
     private void Swap(int i, int j)
     {
         (_items[i], _items[j]) = (_items[j], _items[i]);
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        return ForwardIterator().GetEnumerator()!;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
 

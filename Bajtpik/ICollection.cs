@@ -1,6 +1,6 @@
 ﻿namespace Bajtpik;
 
-public interface ICollection<T>
+public interface ICollection<T>: IEnumerable<T>
 {
     void Add(T? item);
     void Delete(T? item);

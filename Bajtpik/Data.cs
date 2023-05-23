@@ -17,7 +17,7 @@ public abstract class main
             if (a == null || b == null)
                 throw new ArgumentException("Cannot compare null values in a heap.");
 
-            return a.BirthYear?.CompareTo(b.BirthYear??0) ?? 0;
+            return a.BirthYear?.CompareTo(b.BirthYear ?? 0) ?? 0;
         });
 
         //authors1

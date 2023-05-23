@@ -6,6 +6,12 @@ public class Author : IAuthor
     public string? Name = "";
     public string? Nickname = "";
     public string? Surname = "";
+
+    
+    public Author GetAuthor()
+    {
+        return this;
+    }
     
     public void PrintAuthor()
     {
